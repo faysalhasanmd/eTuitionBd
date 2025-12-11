@@ -1,54 +1,76 @@
-import { useState } from 'react'
-import DeleteModal from '../../Modal/DeleteModal'
-const CustomerOrderDataRow = () => {
-  let [isOpen, setIsOpen] = useState(false)
-  const closeModal = () => setIsOpen(false)
+import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import DeleteModel from "./DeleteModel";
+import EditModal from "./EditModal";
+
+const CustomerOrderDataRow = ({ item, refetch }) => {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const closeDeleteModal = () => setIsDeleteOpen(false);
+  const closeEditModal = () => setIsEditOpen(false);
+
+  const handleDelete = async () => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:3000/tuition/${item._id}`
+      );
+
+      if (data.deletedCount === 1) {
+        toast.success("Deleted Successfully!");
+        closeDeleteModal();
+        refetch();
+      } else {
+        toast.error("Delete failed!");
+      }
+    } catch (error) {
+      toast.error("Delete Failed!", error);
+    }
+  };
 
   return (
     <tr>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <div className='flex items-center'>
-          <div className='shrink-0'>
-            <div className='block relative'>
-              <img
-                alt='profile'
-                src='https://i.ibb.co.com/rMHmQP2/money-plant-in-feng-shui-brings-luck.jpg'
-                className='mx-auto object-cover rounded h-10 w-15 '
-              />
-            </div>
-          </div>
-        </div>
+      <td className="px-5 py-5  bg-white">
+        <img src={item.image} className="h-12 w-12 rounded" />
       </td>
 
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900'>Money Plant</p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900'>Indoor</p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900'>$120</p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900'>5</p>
-      </td>
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-        <p className='text-gray-900'>Pending</p>
-      </td>
+      <td className="px-5 py-5 border-b bg-white">{item.studentName}</td>
+      <td className="px-5 py-5 border-b bg-white">{item.subject}</td>
+      <td className="px-5 py-5 border-b bg-white">{item.budget} Tk</td>
+      <td className="px-5 py-5 border-b bg-white">{item.schedule}</td>
+      <td className="px-5 py-5 border-b bg-white">{item.status}</td>
 
-      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+      <td className="px-5 py-7  bg-white flex gap-2">
         <button
-          onClick={() => setIsOpen(true)}
-          className='relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-lime-900 leading-tight'
+          onClick={() => setIsEditOpen(true)}
+          className=" p-3 mt-3 text-center font-medium text-white bg-lime-500 rounded-md"
         >
-          <span className='absolute cursor-pointer inset-0 bg-red-200 opacity-50 rounded-full'></span>
-          <span className='relative cursor-pointer'>Cancel</span>
+          Edit
         </button>
 
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
+        <button
+          onClick={() => setIsDeleteOpen(true)}
+          className=" p-3 mt-3 text-center font-medium text-white bg-red-300 rounded-md"
+        >
+          Delete
+        </button>
+
+        <DeleteModel
+          isOpen={isDeleteOpen}
+          closeModal={closeDeleteModal}
+          confirm={handleDelete}
+        />
+
+        <EditModal
+          isOpen={isEditOpen}
+          closeModal={closeEditModal}
+          item={item}
+          refetch={refetch}
+        />
       </td>
     </tr>
-  )
-}
+  );
+};
 
-export default CustomerOrderDataRow
+export default CustomerOrderDataRow;
