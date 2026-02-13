@@ -15,8 +15,11 @@ import TutorAppliedTuition from "../pages/Dashboard/Customer/TutorAppliedTuition
 import MyAppliedTuition from "../pages/Dashboard/Seller/MyAppliedTuition";
 import ManageStudentPost from "../pages/Dashboard/Seller/ManageStudentPost";
 import TuitionDetails from "../components/Home/TuitionDetails";
+import Tutor from "../pages/Tutor/Tutor";
+import TutorProfile from "../pages/Tutor/TutorProfile";
 
 export const router = createBrowserRouter([
+  // Public Routes
   {
     path: "/",
     element: <MainLayout />,
@@ -28,12 +31,18 @@ export const router = createBrowserRouter([
       },
       {
         path: "/tuition/:id",
-        element: <TuitionDetails></TuitionDetails>,
+        element: <TuitionDetails />,
+      },
+      {
+        path: "/tutors/:id", // Public Tutor Profile (sidebar nai)
+        element: <TutorProfile />,
       },
     ],
   },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
+
+  // Dashboard Routes
   {
     path: "/dashboard",
     element: (
@@ -54,7 +63,7 @@ export const router = createBrowserRouter([
         path: "add-tuition",
         element: (
           <PrivateRoute>
-            <AddTuition></AddTuition>
+            <AddTuition />
           </PrivateRoute>
         ),
       },
@@ -62,7 +71,7 @@ export const router = createBrowserRouter([
         path: "tutor-applied-tuition",
         element: (
           <PrivateRoute>
-            <TutorAppliedTuition></TutorAppliedTuition>
+            <TutorAppliedTuition />
           </PrivateRoute>
         ),
       },
@@ -70,7 +79,7 @@ export const router = createBrowserRouter([
         path: "my-applied-tuition",
         element: (
           <PrivateRoute>
-            <MyAppliedTuition></MyAppliedTuition>
+            <MyAppliedTuition />
           </PrivateRoute>
         ),
       },
@@ -94,13 +103,23 @@ export const router = createBrowserRouter([
         path: "my-tuition",
         element: (
           <PrivateRoute>
-            <MyTuition></MyTuition>
+            <MyTuition />
           </PrivateRoute>
         ),
       },
       {
         path: "manage-student-post",
         element: <ManageStudentPost />,
+      },
+
+      // Dashboard Tutors Routes
+      {
+        path: "users/tutors", // All Tutors inside Dashboard
+        element: <Tutor />,
+      },
+      {
+        path: "tutors/:id", // Tutor Profile inside Dashboard
+        element: <TutorProfile />,
       },
     ],
   },

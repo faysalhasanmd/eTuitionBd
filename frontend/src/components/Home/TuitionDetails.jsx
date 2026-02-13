@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import { AuthContext } from "../../providers/AuthContext";
+import useRole from "../../hooks/useRole";
 
 const TuitionDetails = () => {
   const { id } = useParams();
@@ -20,6 +21,9 @@ const TuitionDetails = () => {
   const [open, setOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
+  const [role, isRoleLoading] = useRole();
+  console.log(typeof role);
+  console.log("hello details");
 
   // Fetch tuition details
   useEffect(() => {
@@ -165,10 +169,10 @@ const TuitionDetails = () => {
           </div>
 
           {/* Apply Button */}
-          {user?.role === "tutor" && (
+          {role === "tutor" && (
             <button
               onClick={() => setOpen(true)}
-              className="w-full p-3 mt-3 text-center font-medium text-white bg-lime-500 rounded-md"
+              className="w-full p-3 mt-3 font-medium text-white bg-lime-500 rounded-md"
             >
               Apply for Tuition
             </button>

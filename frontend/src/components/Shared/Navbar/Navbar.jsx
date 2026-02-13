@@ -1,84 +1,122 @@
-import Container from '../Container'
-import { AiOutlineMenu } from 'react-icons/ai'
-import { useState } from 'react'
-import { Link } from 'react-router'
-import useAuth from '../../../hooks/useAuth'
-import avatarImg from '../../../assets/images/placeholder.jpg'
-import logo from '../../../assets/images/logo-flat.png'
+import Container from "../Container";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useState } from "react";
+import { Link, NavLink } from "react-router"; // ✅ react-router-dom
+import useAuth from "../../../hooks/useAuth";
+import avatarImg from "../../../assets/images/placeholder.jpg";
+import logo from "../../../assets/images/logo-flat.png";
+
 const Navbar = () => {
-  const { user, logOut } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
+  const { user, logOut, role } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className='fixed w-full bg-white z-10 shadow-sm'>
-      <div className='py-4 '>
+    <div className="fixed w-full bg-white z-50 shadow-sm">
+      <div className="py-3">
         <Container>
-          <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
+          <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="logo" className="w-10" />
+              <span className="font-bold text-xl hidden md:block">
+                eTuitionBd
+              </span>
             </Link>
-            {/* Dropdown Menu */}
-            <div className='relative'>
-              <div className='flex flex-row items-center gap-3'>
-                {/* Dropdown btn */}
-                <div
-                  onClick={() => setIsOpen(!isOpen)}
-                  className='p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
-                >
-                  <AiOutlineMenu />
-                  <div className='hidden md:block'>
-                    {/* Avatar */}
-                    <img
-                      className='rounded-full'
-                      referrerPolicy='no-referrer'
-                      src={user && user.photoURL ? user.photoURL : avatarImg}
-                      alt='profile'
-                      height='30'
-                      width='30'
-                    />
-                  </div>
-                </div>
+
+            {/* Middle Nav (Desktop) */}
+            <div className="hidden lg:flex gap-6 font-medium">
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/tuition">Tuitions</NavLink>
+              <NavLink to="/dashboard/users/tutors">Tutors</NavLink>
+              <NavLink to="/about">About</NavLink>
+              <NavLink to="/contact">Contact</NavLink>
+
+              {/* Role-based Dashboard links */}
+              {user && role === "Student" && (
+                <NavLink to="/dashboard/my-tuition">My Tuitions</NavLink>
+              )}
+              {user && role === "Tutor" && (
+                <NavLink to="/dashboard/tutor-applied-tuition">
+                  Applied Tuitions
+                </NavLink>
+              )}
+              {user && role === "Admin" && (
+                <>
+                  <NavLink to="/dashboard/manage-users">Manage Users</NavLink>
+                  <NavLink to="/dashboard/manage-student-post">
+                    Manage Posts
+                  </NavLink>
+                </>
+              )}
+            </div>
+
+            {/* Right Menu */}
+            <div className="relative">
+              <div
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center gap-3 border px-3 py-2 rounded-full cursor-pointer hover:shadow-md transition"
+              >
+                <AiOutlineMenu size={20} />
+                <img
+                  className="w-8 h-8 rounded-full"
+                  src={user?.photoURL || avatarImg}
+                  referrerPolicy="no-referrer"
+                  alt="profile"
+                />
               </div>
+
               {isOpen && (
-                <div className='absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm'>
-                  <div className='flex flex-col cursor-pointer'>
-                    <Link
-                      to='/'
-                      className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                <div className="absolute right-0 top-12 w-48 bg-white rounded-xl shadow-md overflow-hidden text-sm">
+                  <div className="flex flex-col">
+                    {/* Mobile nav */}
+                    <NavLink
+                      to="/"
+                      className="px-4 py-2 hover:bg-neutral-100 lg:hidden"
                     >
                       Home
-                    </Link>
+                    </NavLink>
+                    <NavLink
+                      to="/tuition"
+                      className="px-4 py-2 hover:bg-neutral-100 lg:hidden"
+                    >
+                      Tuitions
+                    </NavLink>
+                    <NavLink
+                      to="/tutors"
+                      className="px-4 py-2 hover:bg-neutral-100 lg:hidden"
+                    >
+                      Tutors
+                    </NavLink>
 
-                    {user ? (
+                    {!user ? (
                       <>
-                        <Link
-                          to='/dashboard'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                        <NavLink
+                          to="/login"
+                          className="px-4 py-2 hover:bg-neutral-100"
                         >
-                          Dashboard
-                        </Link>
-                        <div
-                          onClick={logOut}
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
+                          Login
+                        </NavLink>
+                        <NavLink
+                          to="/signup"
+                          className="px-4 py-2 hover:bg-neutral-100"
                         >
-                          Logout
-                        </div>
+                          Register
+                        </NavLink>
                       </>
                     ) : (
                       <>
-                        <Link
-                          to='/login'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                        <NavLink
+                          to={`/dashboard`}
+                          className="px-4 py-2 hover:bg-neutral-100 font-semibold"
                         >
-                          Login
-                        </Link>
-                        <Link
-                          to='/signup'
-                          className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                          Dashboard
+                        </NavLink>
+                        <button
+                          onClick={logOut}
+                          className="text-left px-4 py-2 hover:bg-neutral-100 text-red-500"
                         >
-                          Sign Up
-                        </Link>
+                          Logout
+                        </button>
                       </>
                     )}
                   </div>
@@ -89,7 +127,7 @@ const Navbar = () => {
         </Container>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

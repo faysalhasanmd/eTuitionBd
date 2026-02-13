@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { saveAndUpdateUser } from "../../Utility";
 
 const SignUp = () => {
@@ -24,7 +23,17 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const { name, email, password, phone } = data;
+    const {
+      name,
+      email,
+      password,
+      phone,
+      education,
+      experience,
+      subjects,
+      location: loc,
+      about,
+    } = data;
 
     try {
       const result = await createUser(email, password);
@@ -34,8 +43,14 @@ const SignUp = () => {
         email,
         phone,
         uid: result.user.uid,
-        role: "Student", // default role
-        image: "",
+        role,
+        image: "https://cdn-icons-png.flaticon.com/512/219/219983.png",
+        // Additional tutor fields
+        education: role === "Tutor" ? education : "",
+        experience: role === "Tutor" ? experience : "",
+        subjects: role === "Tutor" ? subjects : "",
+        location: role === "Tutor" ? loc : "",
+        about: role === "Tutor" ? about : "",
       });
 
       toast.success("Signup Successful");
@@ -43,7 +58,7 @@ const SignUp = () => {
     } catch (err) {
       console.error(err);
       toast.error(
-        err?.response?.data?.message || err?.message || "Signup Failed"
+        err?.response?.data?.message || err?.message || "Signup Failed",
       );
     }
   };
@@ -166,6 +181,62 @@ const SignUp = () => {
               <option value="Tutor">Tutor</option>
             </select>
           </div>
+
+          {/* Additional Tutor Fields */}
+          {role === "Tutor" && (
+            <>
+              <div>
+                <label className="block text-sm mb-1 font-medium">
+                  Education
+                </label>
+                <input
+                  placeholder="Enter your education"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-lime-500 bg-gray-100"
+                  {...register("education")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1 font-medium">
+                  Experience
+                </label>
+                <input
+                  placeholder="Enter your experience"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-lime-500 bg-gray-100"
+                  {...register("experience")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1 font-medium">
+                  Subjects
+                </label>
+                <input
+                  placeholder="Enter subjects you teach"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-lime-500 bg-gray-100"
+                  {...register("subjects")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1 font-medium">
+                  Location
+                </label>
+                <input
+                  placeholder="Enter your location"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-lime-500 bg-gray-100"
+                  {...register("location")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1 font-medium">
+                  About Tutor
+                </label>
+                <textarea
+                  placeholder="Write something about yourself"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-lime-500 bg-gray-100"
+                  {...register("about")}
+                />
+              </div>
+            </>
+          )}
 
           {/* Phone */}
           <div>
