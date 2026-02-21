@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../../../hooks/useAuth";
+import useRole from "../../../hooks/useRole";
 import logo from "../../../assets/images/bd-tuition.png";
 // Icons
 import { GrLogout } from "react-icons/gr";
@@ -16,7 +17,10 @@ import CustomerMenu from "./Menu/CustomerMenu";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
+  const [role, loading] = useRole();
+  console.log(role, loading);
   const [isActive, setActive] = useState(false);
+  if (loading) return null;
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -64,16 +68,19 @@ const Sidebar = () => {
           <div className="flex flex-col justify-between flex-1 mt-6">
             {/*  Menu Items */}
             <nav>
-              {/* Common Menu */}
-              <MenuItem
-                icon={BsGraphUp}
-                label="Statistics"
-                address="/dashboard"
-              />
+              {/* Dashboard / Statistics only if role exists */}
+              {role && (
+                <MenuItem
+                  icon={BsGraphUp}
+                  label="Dashboard"
+                  address="/dashboard"
+                />
+              )}
+
               {/* Role-Based Menu */}
-              <CustomerMenu />
-              <SellerMenu />
-              <AdminMenu />
+              {role === "Student" && <CustomerMenu />}
+              {role === "tutor" && <SellerMenu />}
+              {role === "admin" && <AdminMenu />}
             </nav>
           </div>
 

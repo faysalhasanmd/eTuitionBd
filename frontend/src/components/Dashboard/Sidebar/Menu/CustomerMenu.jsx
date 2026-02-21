@@ -1,5 +1,6 @@
 import { BsFillHouseAddFill, BsFingerprint } from "react-icons/bs";
 import { GrUserAdmin } from "react-icons/gr";
+import { RiSecurePaymentLine } from "react-icons/ri";
 import MenuItem from "./MenuItem";
 import { useState } from "react";
 import BecomeSellerModal from "../../../Modal/BecomeSellerModal";
@@ -23,6 +24,11 @@ const CustomerMenu = () => {
         icon={BsFingerprint}
         label="Tutor Applied Tuition"
         address="tutor-applied-tuition"
+      />
+      <MenuItem
+        icon={RiSecurePaymentLine}
+        label="Payment History"
+        address="student-payment-history"
       />
 
       <div

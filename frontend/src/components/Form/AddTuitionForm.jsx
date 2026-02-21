@@ -30,8 +30,8 @@ const AddTuitionForm = () => {
       };
 
       const res = await axios.post(
-        `http://localhost:3000/tuition`,
-        tuitionData
+        `https://etuitionbd-zeta.vercel.app/tuition`,
+        tuitionData,
       );
 
       if (res.data.insertedId) {

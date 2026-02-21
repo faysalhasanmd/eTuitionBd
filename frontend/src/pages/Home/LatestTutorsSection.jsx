@@ -6,7 +6,7 @@ const LatestTutorsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/users/latest-tutors")
+    fetch("https://etuitionbd-zeta.vercel.app/users/latest-tutors")
       .then((res) => res.json())
       .then((data) => {
         setTutors(data);
@@ -29,16 +29,6 @@ const LatestTutorsSection = () => {
   return (
     <section className="py-20 bg-indigo-50">
       <div className="container mx-auto px-6">
-        {/* Section Title */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-indigo-700">
-            Latest Tutors
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Connect with our newest verified tutors
-          </p>
-        </div>
-
         {/* Tutors Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {tutors.map((tutor, index) => (

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const LatestTuitionSection = () => {
   const [tuitions, setTuitions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/tuition/latest")
+    fetch("https://etuitionbd-zeta.vercel.app/tuition/latest")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch");
@@ -25,7 +26,7 @@ const LatestTuitionSection = () => {
   if (loading) {
     return (
       <div className="text-center py-20 text-gray-500 text-lg">
-        Loading Latest Tuition...
+        <LoadingSpinner></LoadingSpinner>
       </div>
     );
   }
@@ -41,15 +42,6 @@ const LatestTuitionSection = () => {
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-            Latest Tuition Posts
-          </h2>
-          <p className="text-gray-500 mt-2">
-            Recently approved tuition opportunities
-          </p>
-        </div>
-
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {tuitions.map((tuition) => (
             <div

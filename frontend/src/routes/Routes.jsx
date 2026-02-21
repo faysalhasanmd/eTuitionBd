@@ -17,6 +17,10 @@ import ManageStudentPost from "../pages/Dashboard/Seller/ManageStudentPost";
 import TuitionDetails from "../components/Home/TuitionDetails";
 import Tutor from "../pages/Tutor/Tutor";
 import TutorProfile from "../pages/Tutor/TutorProfile";
+import PaymentComplete from "../pages/Dashboard/Customer/PaymentComplete";
+import StudentPaymentHistory from "../pages/Dashboard/Customer/StudentPaymentHistory";
+import TutorOngoingTuitions from "../tutrorPage/TutorOngoingTuitions";
+import RevenueHistory from "../tutrorPage/RevenueHistory";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -41,6 +45,10 @@ export const router = createBrowserRouter([
   },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
+  {
+    path: "payment-complete", // Tutor Profile inside Dashboard
+    element: <PaymentComplete />,
+  },
 
   // Dashboard Routes
   {
@@ -110,6 +118,18 @@ export const router = createBrowserRouter([
       {
         path: "manage-student-post",
         element: <ManageStudentPost />,
+      },
+      {
+        path: "student-payment-history",
+        element: <StudentPaymentHistory />,
+      },
+      {
+        path: "tutor-ongoing-tuitions",
+        element: <TutorOngoingTuitions />,
+      },
+      {
+        path: "revenue-history",
+        element: <RevenueHistory />,
       },
 
       // Dashboard Tutors Routes

@@ -9,7 +9,7 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
     setIsProcessing(true);
     try {
       const res = await axios.put(
-        `http://localhost:3000/tuition/approve/${tuition._id}`
+        `https://etuitionbd-zeta.vercel.app/tuition/approve/${tuition._id}`,
       );
 
       if (res.data.modifiedCount > 0) {

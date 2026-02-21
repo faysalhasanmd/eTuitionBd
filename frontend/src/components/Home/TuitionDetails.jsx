@@ -29,7 +29,9 @@ const TuitionDetails = () => {
   useEffect(() => {
     const fetchTuition = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/tuition/${id}`);
+        const res = await fetch(
+          `https://etuitionbd-zeta.vercel.app/tuition/${id}`,
+        );
         const data = await res.json();
         setTuition(data);
         setLoading(false);
@@ -58,11 +60,14 @@ const TuitionDetails = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/applications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(applicationData),
-      });
+      const res = await fetch(
+        "https://etuitionbd-zeta.vercel.app/applications",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(applicationData),
+        },
+      );
 
       if (res.ok) {
         alert("Application Submitted!");

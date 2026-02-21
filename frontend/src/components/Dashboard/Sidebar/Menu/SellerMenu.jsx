@@ -14,6 +14,16 @@ const SellerMenu = () => {
         label="My Applied Tuition"
         address="my-applied-tuition"
       />
+      <MenuItem
+        icon={MdHomeWork}
+        label="Tutor Ongoing Tuitions"
+        address="tutor-ongoing-tuitions"
+      />
+      <MenuItem
+        icon={MdHomeWork}
+        label="Revenue History"
+        address="revenue-history"
+      />
     </>
   );
 };
