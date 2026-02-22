@@ -174,7 +174,7 @@ const TuitionDetails = () => {
           </div>
 
           {/* Apply Button */}
-          {role === "tutor" && (
+          {role === "Tutor" && (
             <button
               onClick={() => setOpen(true)}
               className="w-full p-3 mt-3 font-medium text-white bg-lime-500 rounded-md"
