@@ -92,6 +92,31 @@ async function run() {
       const result = await UsersCollection.insertOne(userData);
       res.send(result);
     });
+    // ************************************
+    app.get("/users", async (req, res) => {
+      try {
+        const users = await UsersCollection.find({}).toArray();
+        res.send(users);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Failed to fetch users" });
+      }
+    });
+    app.patch("/users/role/:email", async (req, res) => {
+      const email = req.params.email;
+      const { role } = req.body;
+      try {
+        const result = await UsersCollection.updateOne(
+          { email },
+          { $set: { role } },
+        );
+        res.send(result);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Failed to update role" });
+      }
+    });
+    // ************************************
 
     // user get role
     app.get("/user/role/:email", verifyJWT, async (req, res) => {
@@ -201,6 +226,16 @@ async function run() {
       }
     });
 
+    app.patch("/users/role/:email", async (req, res) => {
+      const email = req.params.email;
+      const { role } = req.body;
+      const result = await UsersCollection.updateOne(
+        { email },
+        { $set: { role } },
+      );
+      res.send(result);
+    });
+
     // Get latest tutors
     app.get("/users/latest-tutors", async (req, res) => {
       try {
@@ -253,25 +288,6 @@ async function run() {
       });
       res.send(result);
     });
-
-    // Get all applications for a student (all tuitions)
-    // app.get("/applications/student/:email", async (req, res) => {
-    //   const email = req.params.email;
-
-    //   // 1️⃣ Get all tuitions for student
-    //   const studentTuitions = await tuitionCollection
-    //     .find({ studentEmail: email })
-    //     .toArray();
-
-    //   const tuitionIds = studentTuitions.map((t) => t._id.toString());
-
-    //   // 2️⃣ Get all applications for those tuitions
-    //   const applications = await applicationsCollection
-    //     .find({ tuitionId: { $in: tuitionIds } })
-    //     .toArray();
-
-    //   res.send(applications);
-    // });
 
     // --------------------------------------------------------------
 
@@ -390,6 +406,32 @@ async function run() {
       );
       res.send(result);
     });
+
+    // app.patch("/tuition/:id/status", async (req, res) => {
+    //   // singular 'tuition'
+    //   try {
+    //     const { id } = req.params;
+    //     console.log(id);
+    //     const { status } = req.body;
+    //     if (!["Approved", "Rejected"].includes(status)) {
+    //       return res.status(400).send({ error: "Invalid status value" });
+    //     }
+    //     if (!ObjectId.isValid(id)) {
+    //       return res.status(400).send({ error: "Invalid ID" });
+    //     }
+    //     const result = await tuitionCollection.updateOne(
+    //       { _id: new ObjectId(id) },
+    //       { $set: { status } },
+    //     );
+    //     if (result.modifiedCount === 0) {
+    //       return res.status(404).send({ error: "Tuition not found" });
+    //     }
+    //     res.send({ message: `Tuition ${status} successfully` });
+    //   } catch (error) {
+    //     console.error(error);
+    //     res.status(500).send({ error: "Failed to update status" });
+    //   }
+    // });
 
     // ⬅ Get Tuitions (Support ?status=Approved OR Pending)
     app.get("/tuition", async (req, res) => {
