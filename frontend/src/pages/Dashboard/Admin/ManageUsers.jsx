@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UserDataRow from "../../../components/Dashboard/TableRows/UserDataRow";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -25,7 +26,12 @@ const ManageUsers = () => {
     fetchUsers();
   }, []);
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (loading)
+    return (
+      <p className="text-center py-10">
+        <LoadingSpinner></LoadingSpinner>
+      </p>
+    );
 
   return (
     <div className="container mx-auto px-4 sm:px-8">
@@ -35,6 +41,9 @@ const ManageUsers = () => {
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
+                  <th className="px-5  py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal">
+                    Image
+                  </th>
                   <th className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-left text-sm uppercase font-normal">
                     Email
                   </th>

@@ -102,6 +102,38 @@ async function run() {
         res.status(500).send({ message: "Failed to fetch users" });
       }
     });
+
+    // Update user role
+    app.put("/users/role/:id", async (req, res) => {
+      const id = req.params.id;
+      const { role } = req.body;
+
+      try {
+        const result = await userCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { role } },
+        );
+        res.send(result);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Failed to update role" });
+      }
+    });
+
+    // Delete user
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      try {
+        const result = await userCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+        res.send(result);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: "Failed to delete user" });
+      }
+    });
+
     app.patch("/users/role/:email", async (req, res) => {
       const email = req.params.email;
       const { role } = req.body;
@@ -454,6 +486,20 @@ async function run() {
 
       res.send(result);
     });
+    // ⬅ Admin reject Tuition
+    // app.put("/tuition/reject/:id", async (req, res) => {
+    //   try {
+    //     const id = req.params.id;
+    //     const result = await tuitionCollection.updateOne(
+    //       { _id: new ObjectId(id) },
+    //       { $set: { status: "Reject" } }, // "Rejected" na "Reject"
+    //     );
+    //     res.send(result);
+    //   } catch (err) {
+    //     console.error(err);
+    //     res.status(500).send({ message: "Failed to reject tuition" });
+    //   }
+    // });
 
     //payment system
     app.post("/create-checkout-session", async (req, res) => {
@@ -626,6 +672,30 @@ async function run() {
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Failed to update" });
+      }
+    });
+    app.get("/admin/reports/transactions", async (req, res) => {
+      try {
+        const paymentsCollection = client
+          .db("eTuitionBD")
+          .collection("payments");
+
+        // Fetch all successful payments
+        const transactions = await paymentsCollection
+          .find({ paymentStatus: "paid" })
+          .sort({ paidAt: -1 })
+          .toArray();
+
+        // Calculate total earnings
+        const totalEarnings = transactions.reduce(
+          (sum, t) => sum + (t.amount || 0),
+          0,
+        );
+
+        res.send({ totalEarnings, transactions });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Failed to fetch reports" });
       }
     });
 

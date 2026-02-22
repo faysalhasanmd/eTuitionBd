@@ -21,6 +21,7 @@ import PaymentComplete from "../pages/Dashboard/Customer/PaymentComplete";
 import StudentPaymentHistory from "../pages/Dashboard/Customer/StudentPaymentHistory";
 import TutorOngoingTuitions from "../tutrorPage/TutorOngoingTuitions";
 import RevenueHistory from "../tutrorPage/RevenueHistory";
+import ReportsAnalyticsPage from "../components/Dashboard/Sidebar/adminPages/ReportsAnalyticsPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -130,6 +131,10 @@ export const router = createBrowserRouter([
       {
         path: "revenue-history",
         element: <RevenueHistory />,
+      },
+      {
+        path: "reports-analytics",
+        element: <ReportsAnalyticsPage />,
       },
 
       // Dashboard Tutors Routes

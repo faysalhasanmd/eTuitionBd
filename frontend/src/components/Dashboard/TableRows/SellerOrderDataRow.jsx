@@ -3,10 +3,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const SellerOrderDataRow = ({ tuition, refetch }) => {
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+  const [isRejecting, setIsRejecting] = useState(false);
 
   const handleApprove = async () => {
-    setIsProcessing(true);
+    setIsApproving(true);
     try {
       const res = await axios.put(
         `https://etuitionbd-zeta.vercel.app/tuition/approve/${tuition._id}`,
@@ -20,7 +21,25 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
       console.error(err);
       toast.error("Approval Failed");
     }
-    setIsProcessing(false);
+    setIsApproving(false);
+  };
+
+  const handleReject = async () => {
+    setIsRejecting(true);
+    try {
+      const res = await axios.put(
+        `https://etuitionbd-zeta.vercel.app/tuition/reject/${tuition._id}`,
+      );
+
+      if (res.data.modifiedCount > 0) {
+        toast.error("Tuition Rejected!");
+        refetch();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Rejection Failed");
+    }
+    setIsRejecting(false);
   };
 
   return (
@@ -43,13 +62,20 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-yellow-600 font-semibold">
         {tuition.status}
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm flex gap-2">
         <button
           onClick={handleApprove}
-          disabled={isProcessing}
+          disabled={isApproving}
           className="px-4 py-1 bg-green-500 text-white rounded-md disabled:bg-gray-300"
         >
-          {isProcessing ? "Approving..." : "Approve"}
+          {isApproving ? "Approving..." : "Approve"}
+        </button>
+        <button
+          onClick={handleReject}
+          disabled={isRejecting}
+          className="px-4 py-1 bg-red-500 text-white rounded-md disabled:bg-gray-300"
+        >
+          {isRejecting ? "Processing..." : "Reject"}
         </button>
       </td>
     </tr>
