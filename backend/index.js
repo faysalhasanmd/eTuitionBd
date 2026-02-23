@@ -731,6 +731,63 @@ async function run() {
       }
     });
 
+    //last
+    app.get("/admin/dashboard-stats", async (req, res) => {
+      try {
+        const users = await UsersCollection.countDocuments();
+        const tutors = await UsersCollection.countDocuments({ role: "Tutor" });
+        const students = await UsersCollection.countDocuments({
+          role: "Student",
+        });
+
+        const totalTuitions = await tuitionCollection.countDocuments();
+        const approvedTuitions = await tuitionCollection.countDocuments({
+          status: "Approved",
+        });
+
+        const totalApplications = await applicationsCollection.countDocuments();
+
+        // Total Revenue
+        const revenueResult = await paymentsCollection
+          .aggregate([
+            { $match: { paymentStatus: "paid" } },
+            { $group: { _id: null, totalRevenue: { $sum: "$amount" } } },
+          ])
+          .toArray();
+
+        const totalRevenue = revenueResult[0]?.totalRevenue || 0;
+
+        // Monthly Revenue (for bar chart)
+        const monthlyRevenue = await paymentsCollection
+          .aggregate([
+            { $match: { paymentStatus: "paid" } },
+            {
+              $group: {
+                _id: { $month: "$paidAt" },
+                revenue: { $sum: "$amount" },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+          .toArray();
+
+        res.send({
+          users,
+          tutors,
+          students,
+          totalTuitions,
+          approvedTuitions,
+          totalApplications,
+          totalRevenue,
+          monthlyRevenue,
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Failed to load dashboard stats" });
+      }
+    });
+    //last
+
     console.log("Connected to MongoDB Successfully!");
   } catch (e) {
     console.log(e);
