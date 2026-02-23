@@ -69,13 +69,13 @@ const Sidebar = () => {
             {/*  Menu Items */}
             <nav>
               {/* Dashboard / Statistics only if role exists */}
-              {role && (
+              {/* {role && (
                 <MenuItem
                   icon={BsGraphUp}
                   label="Dashboard"
                   address="/dashboard"
                 />
-              )}
+              )} */}
 
               {/* Role-Based Menu */}
               {role === "Student" && <CustomerMenu />}

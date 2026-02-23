@@ -8,6 +8,11 @@ const AdminMenu = () => {
     <>
       <MenuItem
         icon={MdOutlineManageHistory}
+        label="Admin Statistics"
+        address="admin-statistics"
+      />
+      <MenuItem
+        icon={MdOutlineManageHistory}
         label="Manage Student Post"
         address="manage-student-post"
       />

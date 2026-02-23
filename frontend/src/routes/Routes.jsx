@@ -22,6 +22,9 @@ import StudentPaymentHistory from "../pages/Dashboard/Customer/StudentPaymentHis
 import TutorOngoingTuitions from "../tutrorPage/TutorOngoingTuitions";
 import RevenueHistory from "../tutrorPage/RevenueHistory";
 import ReportsAnalyticsPage from "../components/Dashboard/Sidebar/adminPages/ReportsAnalyticsPage";
+import AdminStatistics from "../components/Dashboard/Statistics/AdminStatistics";
+import TutorStatistics from "../components/Dashboard/Statistics/TutorStatistics";
+import StudentStatistics from "../components/Dashboard/Statistics/StudentStatistics";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -145,6 +148,18 @@ export const router = createBrowserRouter([
       {
         path: "tutors/:id", // Tutor Profile inside Dashboard
         element: <TutorProfile />,
+      },
+      {
+        path: "admin-statistics", // Tutor Profile inside Dashboard
+        element: <AdminStatistics />,
+      },
+      {
+        path: "tutor-statistics", // Tutor Profile inside Dashboard
+        element: <TutorStatistics />,
+      },
+      {
+        path: "student-statistics", // Tutor Profile inside Dashboard
+        element: <StudentStatistics />,
       },
     ],
   },

@@ -16,6 +16,11 @@ const CustomerMenu = () => {
     <>
       <MenuItem
         icon={BsFillHouseAddFill}
+        label="StudentStatistics"
+        address="student-statistics"
+      />
+      <MenuItem
+        icon={BsFillHouseAddFill}
         label="Add Tuition"
         address="add-tuition"
       />

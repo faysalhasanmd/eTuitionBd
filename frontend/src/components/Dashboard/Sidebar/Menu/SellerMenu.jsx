@@ -6,6 +6,11 @@ const SellerMenu = () => {
     <>
       <MenuItem
         icon={MdHomeWork}
+        label="TutorStatistics"
+        address="tutor-statistics"
+      />
+      <MenuItem
+        icon={MdHomeWork}
         label="My Applied Tuition"
         address="my-applied-tuition"
       />
