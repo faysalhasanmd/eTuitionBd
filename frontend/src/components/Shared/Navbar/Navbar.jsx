@@ -26,7 +26,7 @@ const Navbar = () => {
             {/* Middle Nav (Desktop) */}
             <div className="hidden lg:flex gap-6 font-medium">
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/tuition">Tuitions</NavLink>
+              <NavLink to="/all-tuitions">Tuitions</NavLink>
               <NavLink to="/dashboard/users/tutors">Tutors</NavLink>
               <NavLink to="/about">About</NavLink>
               <NavLink to="/contact">Contact</NavLink>
@@ -76,7 +76,7 @@ const Navbar = () => {
                       Home
                     </NavLink>
                     <NavLink
-                      to="/tuition"
+                      to="/all-tuitions"
                       className="px-4 py-2 hover:bg-neutral-100 lg:hidden"
                     >
                       Tuitions

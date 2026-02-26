@@ -1,7 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
-
-// react-icons
+import { useParams, useNavigate } from "react-router"; // <-- useNavigate import
 import {
   FiMapPin,
   FiUser,
@@ -16,14 +14,13 @@ import useRole from "../../hooks/useRole";
 
 const TuitionDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // <-- hook
   const [tuition, setTuition] = useState(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
   const [role, isRoleLoading] = useRole();
-  console.log(typeof role);
-  console.log("hello details");
 
   // Fetch tuition details
   useEffect(() => {
@@ -96,6 +93,16 @@ const TuitionDetails = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
+      {/* Back Button */}
+      <div className="mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="px-4 py-2 bg-green-200 text-gray-700 rounded-lg shadow hover:bg-gray-300 transition"
+        >
+          &larr; Back
+        </button>
+      </div>
+
       {/* Header Title */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Tuition Details
@@ -121,6 +128,7 @@ const TuitionDetails = () => {
 
         {/* Content Section */}
         <div className="p-6 space-y-4">
+          {/* Tuition Info */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="flex items-center gap-3">
               <FiBookOpen className="w-5 h-5 text-lime-600" />
@@ -129,14 +137,12 @@ const TuitionDetails = () => {
                 {tuition.subject}
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <FiUser className="w-5 h-5 text-lime-600" />
               <p className="text-gray-700">
                 <span className="font-semibold">Class:</span> {tuition.class}
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <FiMapPin className="w-5 h-5 text-lime-600" />
               <p className="text-gray-700">
@@ -144,7 +150,6 @@ const TuitionDetails = () => {
                 {tuition.location}
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <FiDollarSign className="w-5 h-5 text-lime-600" />
               <p className="text-gray-700">
@@ -152,7 +157,6 @@ const TuitionDetails = () => {
                 Tk
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <FiCalendar className="w-5 h-5 text-lime-600" />
               <p className="text-gray-700">

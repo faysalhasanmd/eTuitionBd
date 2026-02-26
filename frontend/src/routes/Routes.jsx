@@ -25,6 +25,8 @@ import ReportsAnalyticsPage from "../components/Dashboard/Sidebar/adminPages/Rep
 import AdminStatistics from "../components/Dashboard/Statistics/AdminStatistics";
 import TutorStatistics from "../components/Dashboard/Statistics/TutorStatistics";
 import StudentStatistics from "../components/Dashboard/Statistics/StudentStatistics";
+import Tuition from "../components/Home/Tuition";
+import AllTuitions from "../components/Shared/Navbar/AllTuitions";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -52,6 +54,10 @@ export const router = createBrowserRouter([
   {
     path: "payment-complete", // Tutor Profile inside Dashboard
     element: <PaymentComplete />,
+  },
+  {
+    path: "/all-tuitions", // Tutor Profile inside Dashboard
+    element: <AllTuitions />,
   },
 
   // Dashboard Routes
