@@ -4,7 +4,6 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRETE_KEY);
 const admin = require("firebase-admin");
-// const { line } = require("framer-motion/client");
 
 const port = process.env.PORT || 3000;
 const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
@@ -25,6 +24,8 @@ app.use(
       "http://localhost:5174",
       "https://b12-m11-session.web.app",
       "https://silly-faloodeh-3ca224.netlify.app",
+      "https://etuitionbd-fawn.vercel.app",
+      "https://flourishing-churros-0d4b56.netlify.app",
     ],
     credentials: true,
   }),
@@ -35,7 +36,6 @@ app.use(express.json());
 const verifyJWT = async (req, res, next) => {
   const token = req?.headers?.authorization?.split(" ")[1];
   if (!token) return res.status(401).send({ message: "Unauthorized!" });
-
   try {
     const decoded = await admin.auth().verifyIdToken(token);
     req.tokenEmail = decoded.email;
@@ -151,15 +151,15 @@ async function run() {
     // ************************************
 
     // user get role
-    app.get("/user/role/:email", verifyJWT, async (req, res) => {
-      if (req.tokenEmail !== req.params.email) {
-        return res.status(403).send({ message: "Forbidden" });
-      }
-      const result = await UsersCollection.findOne({
-        email: req.params.email,
-      });
-      res.send({ role: result?.role });
-    });
+    // app.get("/user/role/:email", verifyJWT, async (req, res) => {
+    //   if (req.tokenEmail !== req.params.email) {
+    //     return res.status(403).send({ message: "Forbidden" });
+    //   }
+    //   const result = await UsersCollection.findOne({
+    //     email: req.params.email,
+    //   });
+    //   res.send({ role: result?.role });
+    // });
 
     app.get("/user/role/:email", async (req, res) => {
       const email = req.params.email;
@@ -226,7 +226,6 @@ async function run() {
 
         const payments = await paymentsCollection
           .aggregate([
-            // Convert string applicationId to ObjectId
             {
               $addFields: {
                 applicationObjId: { $toObjectId: "$applicationId" },
@@ -328,7 +327,6 @@ async function run() {
       const application = req.body;
       application.status = "Pending";
       application.appliedAt = new Date();
-
       const result = await applicationsCollection.insertOne(application);
       res.send(result);
     });
