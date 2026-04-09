@@ -9,7 +9,7 @@ const StudentPaymentHistory = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`https://etuitionbd-zeta.vercel.app/payments/student/${user.email}`)
+    fetch(`https://etuitionbd-fawn.vercel.app/payments/student/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setPayments(data);

@@ -27,6 +27,8 @@ import TutorStatistics from "../components/Dashboard/Statistics/TutorStatistics"
 import StudentStatistics from "../components/Dashboard/Statistics/StudentStatistics";
 import Tuition from "../components/Home/Tuition";
 import AllTuitions from "../components/Shared/Navbar/AllTuitions";
+import About from "../components/Shared/About";
+import Contact from "../components/Shared/Contact";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -38,6 +40,18 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/all-tuitions", // Tutor Profile inside Dashboard
+        element: <AllTuitions />,
+      },
+      {
+        path: "about",
+        element: <About></About>,
+      },
+      {
+        path: "contact",
+        element: <Contact></Contact>,
       },
       {
         path: "/tuition/:id",
@@ -54,10 +68,6 @@ export const router = createBrowserRouter([
   {
     path: "payment-complete", // Tutor Profile inside Dashboard
     element: <PaymentComplete />,
-  },
-  {
-    path: "/all-tuitions", // Tutor Profile inside Dashboard
-    element: <AllTuitions />,
   },
 
   // Dashboard Routes

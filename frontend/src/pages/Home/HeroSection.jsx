@@ -8,7 +8,7 @@ const HeroSection = () => {
 
   // 🔥 Fetch Approved Tuition Images
   useEffect(() => {
-    fetch("https://etuitionbd-zeta.vercel.app/tuition?status=Approved")
+    fetch("https://etuitionbd-fawn.vercel.app/tuition?status=Approved")
       .then((res) => res.json())
       .then((data) => {
         const imageList = data.map((item) => item.image).filter((img) => img);

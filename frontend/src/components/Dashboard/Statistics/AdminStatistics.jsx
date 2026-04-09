@@ -11,6 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
+import LoadingSpinner from "../../Shared/LoadingSpinner";
+import { FaChartLine } from "react-icons/fa";
 
 // Chart.js setup
 ChartJS.register(
@@ -25,6 +27,7 @@ ChartJS.register(
 
 const AdminStatistics = () => {
   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -35,100 +38,110 @@ const AdminStatistics = () => {
         setStats(res.data);
       } catch (err) {
         console.error("Failed to fetch dashboard stats:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchStats();
   }, []);
 
-  if (!stats) return <p>Loading...</p>;
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
-  // Admin count calculation if not provided
+  // fallback admin count
   const admins =
     stats.admins !== undefined
       ? stats.admins
       : stats.users - (stats.students + stats.tutors);
 
-  // Pie chart: Users breakdown
+  // 🎯 Chart Colors
+  const COLORS = {
+    student: "#4e73df",
+    tutor: "#1cc88a",
+    admin: "#f6c23e",
+    revenue: "#36b9cc",
+    pending: "#e74a3b",
+    application: "#858796",
+  };
+
+  // Users Pie
   const usersPieData = {
     labels: ["Students", "Tutors", "Admins"],
     datasets: [
       {
-        label: "Users Distribution",
         data: [stats.students, stats.tutors, admins],
-        backgroundColor: ["#4e73df", "#1cc88a", "#f6c23e"],
-        borderColor: ["#fff", "#fff", "#fff"],
+        backgroundColor: [COLORS.student, COLORS.tutor, COLORS.admin],
         borderWidth: 2,
       },
     ],
   };
 
-  // Bar chart: Total Revenue
+  // Revenue
   const revenueBarData = {
     labels: ["Revenue"],
     datasets: [
       {
-        label: "Total Revenue (BDT)",
         data: [stats.totalRevenue],
-        backgroundColor: "#36b9cc",
+        backgroundColor: COLORS.revenue,
         borderRadius: 8,
       },
     ],
   };
 
-  // Bar chart: Total Tuitions
+  // Tuitions
   const tuitionsBarData = {
     labels: ["Tuitions"],
     datasets: [
       {
         label: "Approved",
         data: [stats.approvedTuitions],
-        backgroundColor: "#4e73df",
-        borderRadius: 6,
+        backgroundColor: COLORS.student,
       },
       {
         label: "Pending",
         data: [stats.totalTuitions - stats.approvedTuitions],
-        backgroundColor: "#e74a3b",
-        borderRadius: 6,
+        backgroundColor: COLORS.pending,
       },
     ],
   };
 
-  // Pie chart: Total Applications
+  // Applications
   const applicationsPieData = {
     labels: ["Applications"],
     datasets: [
       {
-        label: "Total Applications",
         data: [stats.totalApplications],
-        backgroundColor: ["#858796"],
-        borderColor: ["#fff"],
-        borderWidth: 2,
+        backgroundColor: [COLORS.application],
       },
     ],
   };
 
-  // Professional card component
+  // Card component
   const Card = ({ title, value, color }) => (
     <div
       style={{
         flex: "1 1 180px",
         padding: "20px",
-        borderRadius: "12px",
-        backgroundColor: color || "#f8f9fc",
+        borderRadius: "14px",
+        backgroundColor: color,
         boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
         textAlign: "center",
-        transition: "transform 0.2s",
+        transition: "all 0.3s ease",
+        cursor: "pointer",
+        color: "#fff",
       }}
-      className="card-hover"
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.transform = "translateY(-5px)")
+      }
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
     >
-      <h4 style={{ margin: 0, fontWeight: 500, color: "#333" }}>{title}</h4>
+      <h4 style={{ margin: 0 }}>{title}</h4>
       <p
         style={{
-          margin: "10px 0 0",
+          marginTop: "10px",
           fontWeight: "bold",
-          fontSize: "1.3rem",
-          color: "#111",
+          fontSize: "1.4rem",
         }}
       >
         {value}
@@ -140,15 +153,43 @@ const AdminStatistics = () => {
     <div
       style={{
         padding: "30px",
-        fontFamily: "Arial, sans-serif",
         backgroundColor: "#f1f3f6",
+        minHeight: "100vh",
       }}
     >
-      <h2 style={{ marginBottom: "30px", color: "#4e73df" }}>
-        Admin Dashboard
-      </h2>
+      {/* 🔥 Header */}
+      <div
+        style={{
+          marginTop: "48px",
+          marginBottom: "28px",
+          padding: "25px 30px",
+          borderRadius: "14px",
+          background: "linear-gradient(135deg, #4e73df, #224abe)",
+          color: "#fff",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "28px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <FaChartLine /> Admin Dashboard
+        </h2>
 
-      {/* Overview Cards */}
+        <p style={{ marginTop: "8px", fontSize: "14px", opacity: 0.9 }}>
+          Overview of platform performance, users, revenue & analytics
+        </p>
+
+        <p style={{ marginTop: "5px", fontSize: "12px", opacity: 0.8 }}>
+          Last updated: {new Date().toLocaleString()}
+        </p>
+      </div>
+
+      {/* 🎯 Cards */}
       <div
         style={{
           display: "flex",
@@ -157,105 +198,83 @@ const AdminStatistics = () => {
           marginBottom: "50px",
         }}
       >
-        <Card title="Total Users" value={stats.users} />
-        <Card title="Students" value={stats.students} color="#4e73df" />
-        <Card title="Tutors" value={stats.tutors} color="#1cc88a" />
-        <Card title="Admins" value={admins} color="#f6c23e" />
+        <Card title="Total Users" value={stats.users} color="#6c757d" />
+
+        <Card title="Students" value={stats.students} color={COLORS.student} />
+
+        <Card title="Tutors" value={stats.tutors} color={COLORS.tutor} />
+
+        <Card title="Admins" value={admins} color={COLORS.admin} />
+
         <Card
-          title="Total Revenue"
+          title="Revenue"
           value={`${stats.totalRevenue} BDT`}
-          color="#36b9cc"
+          color={COLORS.revenue}
         />
+
         <Card
-          title="Total Tuitions"
-          value={`${stats.totalTuitions} (Approved: ${stats.approvedTuitions})`}
-          color="#4e73df"
+          title="Tuitions"
+          value={`${stats.totalTuitions}`}
+          color={COLORS.pending}
         />
+
         <Card
-          title="Total Applications"
+          title="Applications"
           value={stats.totalApplications}
-          color="#858796"
+          color={COLORS.application}
         />
       </div>
 
-      {/* Charts Section */}
+      {/* 📊 Charts */}
       <div
         style={{
           display: "flex",
-          gap: "40px",
+          gap: "30px",
           flexWrap: "wrap",
         }}
       >
-        <div
-          style={{
-            flex: 1,
-            minWidth: "300px",
-            padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-          }}
-        >
-          <h3 style={{ marginBottom: "15px", color: "#4e73df" }}>
-            Users Breakdown
-          </h3>
+        <div className="chart-box">
+          <h3>Users Breakdown</h3>
           <Pie data={usersPieData} />
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: "300px",
-            padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-          }}
-        >
-          <h3 style={{ marginBottom: "15px", color: "#4e73df" }}>
-            Total Revenue
-          </h3>
+        <div className="chart-box">
+          <h3>Total Revenue</h3>
           <Bar
             data={revenueBarData}
-            options={{
-              indexAxis: "y",
-              plugins: { legend: { display: false } },
-            }}
+            options={{ plugins: { legend: { display: false } } }}
           />
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: "300px",
-            padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-          }}
-        >
-          <h3 style={{ marginBottom: "15px", color: "#4e73df" }}>
-            Total Tuitions
-          </h3>
+        <div className="chart-box">
+          <h3>Tuitions</h3>
           <Bar data={tuitionsBarData} />
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: "300px",
-            padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-          }}
-        >
-          <h3 style={{ marginBottom: "15px", color: "#4e73df" }}>
-            Total Applications
-          </h3>
+        <div className="chart-box">
+          <h3>Applications</h3>
           <Pie data={applicationsPieData} />
         </div>
       </div>
+
+      {/* CSS */}
+      <style>
+        {`
+          .chart-box {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          }
+
+          .chart-box h3 {
+            margin-bottom: 15px;
+            color: #4e73df;
+          }
+        `}
+      </style>
     </div>
   );
 };

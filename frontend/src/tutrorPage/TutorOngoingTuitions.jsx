@@ -26,7 +26,7 @@ const TutorOngoingTuitions = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-9">
       {/* Page Title */}
       <h2 className="text-3xl font-bold mb-8 border-b pb-3 text-indigo-600">
         Tutor Ongoing Tuitions

@@ -10,7 +10,7 @@ const MyAppliedTuition = () => {
   useEffect(() => {
     if (user?.email) {
       fetch(
-        `https://etuitionbd-zeta.vercel.app/applications/tutor/${user.email}`,
+        `https://etuitionbd-fawn.vercel.app/applications/tutor/${user.email}`,
       )
         .then((res) => res.json())
         .then((data) => setApplications(data));
@@ -21,7 +21,7 @@ const MyAppliedTuition = () => {
     if (!window.confirm("Are you sure?")) return;
 
     const res = await fetch(
-      `https://etuitionbd-zeta.vercel.app/applications/${id}`,
+      `https://etuitionbd-fawn.vercel.app/applications/${id}`,
       {
         method: "DELETE",
       },
@@ -35,7 +35,7 @@ const MyAppliedTuition = () => {
 
   const handleUpdate = async (id) => {
     const res = await fetch(
-      `https://etuitionbd-zeta.vercel.app/applications/update/${id}`,
+      `https://etuitionbd-fawn.vercel.app/applications/update/${id}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -52,8 +52,8 @@ const MyAppliedTuition = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold text-center mb-8">
+    <div className="max-w-7xl mx-auto px-4 mt-9 py-10">
+      <h2 className="text-3xl font-bold mb-8 border-b pb-3 text-indigo-600">
         My Applied Tuitions
       </h2>
 

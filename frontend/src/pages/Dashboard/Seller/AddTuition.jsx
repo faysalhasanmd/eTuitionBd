@@ -2,7 +2,7 @@ import AddPlantForm from "../../../components/Form/AddTuitionForm";
 
 const AddTuition = () => {
   return (
-    <div>
+    <div className="mt-8">
       {/* Form */}
       <AddPlantForm />
     </div>

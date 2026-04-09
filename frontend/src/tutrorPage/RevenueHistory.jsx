@@ -29,11 +29,11 @@ const RevenueHistory = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-9">
       {/* Page Title */}
-      <h2 className="text-3xl font-bold mb-6 border-b pb-2 text-indigo-600">
+      {/* <h2 className="text-3xl font-bold mb-6 border-b pb-2 text-indigo-600">
         Revenue History
-      </h2>
+      </h2> */}
 
       {/* Total Earnings */}
       <div className="bg-indigo-600 text-white rounded-xl p-6 mb-6 shadow-md flex justify-between items-center">

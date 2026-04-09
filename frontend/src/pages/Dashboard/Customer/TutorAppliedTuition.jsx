@@ -19,7 +19,7 @@ const TutorAppliedTuition = () => {
 
     setLoading(true);
     fetch(
-      `https://etuitionbd-zeta.vercel.app/applications/student/${userEmail}`,
+      `https://etuitionbd-fawn.vercel.app/applications/student/${userEmail}`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -36,7 +36,7 @@ const TutorAppliedTuition = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await fetch(
-        `https://etuitionbd-zeta.vercel.app/applications/${id}`,
+        `https://etuitionbd-fawn.vercel.app/applications/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ const TutorAppliedTuition = () => {
   const handlePayment = async (app) => {
     try {
       const res = await fetch(
-        "https://etuitionbd-zeta.vercel.app/create-checkout-session",
+        "https://etuitionbd-fawn.vercel.app/create-checkout-session",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

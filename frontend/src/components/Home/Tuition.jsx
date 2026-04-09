@@ -4,7 +4,7 @@ import Container from "../Shared/Container";
 
 const Tuition = ({ tuitions }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // প্রতি page-এ কতটা tuition দেখাবো
+  const itemsPerPage = 8;
 
   // Pagination logic
   const indexOfLast = currentPage * itemsPerPage;

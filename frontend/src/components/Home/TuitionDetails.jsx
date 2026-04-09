@@ -27,7 +27,7 @@ const TuitionDetails = () => {
     const fetchTuition = async () => {
       try {
         const res = await fetch(
-          `https://etuitionbd-zeta.vercel.app/tuition/${id}`,
+          `https://etuitionbd-fawn.vercel.app/tuition/${id}`,
         );
         const data = await res.json();
         setTuition(data);
@@ -58,7 +58,7 @@ const TuitionDetails = () => {
 
     try {
       const res = await fetch(
-        "https://etuitionbd-zeta.vercel.app/applications",
+        "https://etuitionbd-fawn.vercel.app/applications",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

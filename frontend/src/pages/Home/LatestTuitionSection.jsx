@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import { Link } from "react-router";
 
 const LatestTuitionSection = () => {
   const [tuitions, setTuitions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://etuitionbd-zeta.vercel.app/tuition/latest")
+    fetch("https://etuitionbd-fawn.vercel.app/tuition/latest")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch");
@@ -69,9 +70,12 @@ const LatestTuitionSection = () => {
                   Budget: ৳{tuition.budget}
                 </p>
 
-                <button className="w-full bg-lime-500 text-white py-2 rounded-lg hover:bg-lime-600 transition">
+                <Link
+                  to={`/tuition/${tuition._id}`}
+                  className="mt-auto inline-block text-center w-full py-2 px-4 bg-lime-500 text-white font-medium rounded-lg hover:bg-lime-600 transition-colors"
+                >
                   View Details
-                </button>
+                </Link>
               </div>
             </div>
           ))}

@@ -10,7 +10,7 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
     setIsApproving(true);
     try {
       const res = await axios.put(
-        `https://etuitionbd-zeta.vercel.app/tuition/approve/${tuition._id}`,
+        `https://etuitionbd-fawn.vercel.app/tuition/approve/${tuition._id}`,
       );
 
       if (res.data.modifiedCount > 0) {
@@ -28,7 +28,7 @@ const SellerOrderDataRow = ({ tuition, refetch }) => {
     setIsRejecting(true);
     try {
       const res = await axios.put(
-        `https://etuitionbd-zeta.vercel.app/tuition/reject/${tuition._id}`,
+        `https://etuitionbd-fawn.vercel.app/tuition/reject/${tuition._id}`,
       );
 
       if (res.data.modifiedCount > 0) {

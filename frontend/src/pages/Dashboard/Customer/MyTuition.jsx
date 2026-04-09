@@ -10,7 +10,7 @@ const MyTuition = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.get(
-        "https://etuitionbd-zeta.vercel.app/tuition?status=Approved",
+        "https://etuitionbd-fawn.vercel.app/tuition?status=Approved",
       );
       setTuitions(data);
       setLoading(false);

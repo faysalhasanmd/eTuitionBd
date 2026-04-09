@@ -6,7 +6,7 @@ const LatestTutorsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://etuitionbd-zeta.vercel.app/users/latest-tutors")
+    fetch("https://etuitionbd-fawn.vercel.app/users/latest-tutors")
       .then((res) => res.json())
       .then((data) => {
         setTutors(data);
