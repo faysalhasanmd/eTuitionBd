@@ -1,5 +1,5 @@
 import useAuth from "../../../hooks/useAuth";
-import coverImg from "../../../assets/images/cover.jpg";
+import coverImg from "../../../assets/images/Pcover.jpg";
 import useRole from "../../../hooks/useRole";
 
 const Profile = () => {

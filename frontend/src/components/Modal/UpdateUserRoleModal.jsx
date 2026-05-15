@@ -14,14 +14,17 @@ const UpdateUserRoleModal = ({
   const handleUpdate = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/users/role/${userEmail}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const res = await fetch(
+        `https://tuitionsbd.vercel.app/users/role/${userEmail}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ role: updatedRole }),
         },
-        body: JSON.stringify({ role: updatedRole }),
-      });
+      );
       const data = await res.json();
       if (data.modifiedCount > 0) {
         fetchUsers(); // Refresh table

@@ -1,8 +1,21 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Card = ({ item }) => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
-    <div className="group w-[265px] mb-3.5 bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col">
+    <div
+      data-aos="fade-up"
+      className="group mb-3.5 bg-white rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col"
+    >
       {/* Image */}
       <div className="relative w-full h-48 overflow-hidden">
         <img
@@ -19,10 +32,11 @@ const Card = ({ item }) => {
           Student: {item.studentName}
         </h3>
         <p className="text-gray-600 text-sm truncate">
-          Subject: {item.subject}
+          📚 Subject: {item.subject}
         </p>
-        <p className="text-gray-600 text-sm">Budget: {item.budget} Tk</p>
-        <p className="text-gray-600 text-sm">Schedule: {item.schedule}</p>
+        <p className="text-gray-600 text-sm">💰 Budget: {item.budget} Tk</p>
+        <p className="text-gray-600 text-sm">🗓️ Schedule: {item.schedule}</p>
+        <p className="text-gray-600 text-sm">📍 Location: {item.location}</p>
 
         <p className="text-gray-600 text-sm truncate">
           {item.description?.length > 60

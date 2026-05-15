@@ -1,26 +1,29 @@
-import { BsFillHouseAddFill } from "react-icons/bs";
-import { MdHomeWork } from "react-icons/md";
+import { FcStatistics } from "react-icons/fc";
+import { VscGitStashApply } from "react-icons/vsc";
+import { MdOutlineWorkHistory } from "react-icons/md";
 import MenuItem from "./MenuItem";
+import { TbReportMoney } from "react-icons/tb";
+
 const SellerMenu = () => {
   return (
     <>
       <MenuItem
-        icon={MdHomeWork}
+        icon={FcStatistics}
         label="TutorStatistics"
         address="tutor-statistics"
       />
       <MenuItem
-        icon={MdHomeWork}
+        icon={VscGitStashApply}
         label="My Applied Tuition"
         address="my-applied-tuition"
       />
       <MenuItem
-        icon={MdHomeWork}
+        icon={TbReportMoney}
         label="Tutor Ongoing Tuitions"
         address="tutor-ongoing-tuitions"
       />
       <MenuItem
-        icon={MdHomeWork}
+        icon={MdOutlineWorkHistory}
         label="Revenue History"
         address="revenue-history"
       />

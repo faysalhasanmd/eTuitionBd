@@ -1,6 +1,6 @@
 import Button from "../components/Shared/Button/Button";
 import { useNavigate } from "react-router";
-import errorImg from "../assets/images/A-404-Page.jpg";
+import errorImg from "../assets/images/1_7KCpGW9_D2rIlNV2JhFspQ.png";
 
 const ErrorPage = () => {
   const navigate = useNavigate();

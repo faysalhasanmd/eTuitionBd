@@ -22,12 +22,9 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
-      "https://b12-m11-session.web.app",
-      "https://silly-faloodeh-3ca224.netlify.app",
-      "https://etuitionbd-fawn.vercel.app",
-      "https://flourishing-churros-0d4b56.netlify.app",
+      "https://bdtuitions.vercel.app",
+      "https://cerulean-maamoul-f79e46.netlify.app",
     ],
-    credentials: true,
   }),
 );
 app.use(express.json());
@@ -44,7 +41,9 @@ const verifyJWT = async (req, res, next) => {
     return res.status(401).send({ message: "Unauthorized!" });
   }
 };
+// *****************************
 
+// **************************
 // MongoDB Setup
 const client = new MongoClient(process.env.MONGODB_URI, {
   serverApi: { version: ServerApiVersion.v1, strict: true },
@@ -67,6 +66,21 @@ async function run() {
       const result = await tuitionCollection.insertOne(tuitionData);
       res.send(result);
     });
+
+    app.get("/user/role/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await UsersCollection.findOne({ email });
+      res.send({ role: result?.role });
+    });
+
+    // app.get("/user/role/:email", async (req, res) => {
+    //       const email = req.params.email;
+    //       const result = await UsersCollection.findOne({ email });
+    //       console.log(result);
+    //       res.send({ role: result?.role });
+    //     });
+
+    // ***************
 
     //user save and update
     app.post("/user", async (req, res) => {
@@ -109,7 +123,7 @@ async function run() {
       const { role } = req.body;
 
       try {
-        const result = await userCollection.updateOne(
+        const result = await UsersCollection.updateOne(
           { _id: new ObjectId(id) },
           { $set: { role } },
         );
@@ -124,7 +138,7 @@ async function run() {
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
       try {
-        const result = await userCollection.deleteOne({
+        const result = await UsersCollection.deleteOne({
           _id: new ObjectId(id),
         });
         res.send(result);
@@ -151,7 +165,7 @@ async function run() {
     // ************************************
 
     // user get role
-    // app.get("/user/role/:email", verifyJWT, async (req, res) => {
+    // app.get("/user/role/:email", async (req, res) => {
     //   if (req.tokenEmail !== req.params.email) {
     //     return res.status(403).send({ message: "Forbidden" });
     //   }
@@ -371,8 +385,6 @@ async function run() {
       }
     });
 
-    // --------------------------------------------------------------
-
     // Get Applications by Tuition ID (Student Dashboard)
     app.get("/applications/tuition/:id", async (req, res) => {
       const tuitionId = req.params.id;
@@ -380,29 +392,6 @@ async function run() {
       res.send(result);
     });
 
-    // Approve Application
-    // app.put("/applications/approve/:id", async (req, res) => {
-    //   const id = req.params.id;
-
-    //   const result = await applicationsCollection.updateOne(
-    //     { _id: new ObjectId(id) },
-    //     { $set: { status: "Approved" } },
-    //   );
-
-    //   res.send(result);
-    // });
-
-    // // Reject Application
-    // app.put("/applications/reject/:id", async (req, res) => {
-    //   const id = req.params.id;
-
-    //   const result = await applicationsCollection.updateOne(
-    //     { _id: new ObjectId(id) },
-    //     { $set: { status: "Rejected" } },
-    //   );
-
-    //   res.send(result);
-    // });
     app.patch("/applications/:id", async (req, res) => {
       try {
         const id = req.params.id;
@@ -437,41 +426,25 @@ async function run() {
       res.send(result);
     });
 
-    // app.patch("/tuition/:id/status", async (req, res) => {
-    //   // singular 'tuition'
-    //   try {
-    //     const { id } = req.params;
-    //     console.log(id);
-    //     const { status } = req.body;
-    //     if (!["Approved", "Rejected"].includes(status)) {
-    //       return res.status(400).send({ error: "Invalid status value" });
-    //     }
-    //     if (!ObjectId.isValid(id)) {
-    //       return res.status(400).send({ error: "Invalid ID" });
-    //     }
-    //     const result = await tuitionCollection.updateOne(
-    //       { _id: new ObjectId(id) },
-    //       { $set: { status } },
-    //     );
-    //     if (result.modifiedCount === 0) {
-    //       return res.status(404).send({ error: "Tuition not found" });
-    //     }
-    //     res.send({ message: `Tuition ${status} successfully` });
-    //   } catch (error) {
-    //     console.error(error);
-    //     res.status(500).send({ error: "Failed to update status" });
-    //   }
-    // });
-
     // ⬅ Get Tuitions (Support ?status=Approved OR Pending)
     app.get("/tuition", async (req, res) => {
-      const status = req.query.status;
+      try {
+        const { status, email } = req.query;
+        let query = {};
 
-      let query = {};
-      if (status) query.status = status;
+        if (status) query.status = status;
 
-      const result = await tuitionCollection.find(query).toArray();
-      res.send(result);
+        if (email) query.studentEmail = email;
+
+        const result = await tuitionCollection
+          .find(query)
+          .sort({ postedAt: -1 })
+          .toArray();
+        res.send(result);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Failed to fetch tuitions" });
+      }
     });
 
     // ⬅ Admin Approves Tuition
@@ -481,23 +454,8 @@ async function run() {
         { _id: new ObjectId(id) },
         { $set: { status: "Approved" } },
       );
-
       res.send(result);
     });
-    // ⬅ Admin reject Tuition
-    // app.put("/tuition/reject/:id", async (req, res) => {
-    //   try {
-    //     const id = req.params.id;
-    //     const result = await tuitionCollection.updateOne(
-    //       { _id: new ObjectId(id) },
-    //       { $set: { status: "Reject" } }, // "Rejected" na "Reject"
-    //     );
-    //     res.send(result);
-    //   } catch (err) {
-    //     console.error(err);
-    //     res.status(500).send({ message: "Failed to reject tuition" });
-    //   }
-    // });
 
     //payment system
     app.post("/create-checkout-session", async (req, res) => {
@@ -587,42 +545,8 @@ async function run() {
         const email = req.params.email;
 
         const result = await applicationsCollection
-          .aggregate([
-            {
-              $match: { tutorEmail: email },
-            },
-            {
-              $addFields: {
-                tuitionObjectId: { $toObjectId: "$tuitionId" },
-              },
-            },
-            {
-              $lookup: {
-                from: "tuition",
-                localField: "tuitionObjectId",
-                foreignField: "_id",
-                as: "tuitionInfo",
-              },
-            },
-            {
-              $unwind: "$tuitionInfo",
-            },
-            {
-              $project: {
-                expectedSalary: 1,
-                status: 1,
-                appliedAt: 1,
-                qualifications: 1,
-                experience: 1,
-                tuitionTitle: "$tuitionInfo.title",
-                studentName: "$tuitionInfo.studentName",
-                location: "$tuitionInfo.location",
-              },
-            },
-            {
-              $sort: { appliedAt: -1 },
-            },
-          ])
+          .find({ tutorEmail: email })
+          .sort({ appliedAt: -1 })
           .toArray();
 
         res.send(result);

@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import Container from "../Shared/Container";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Tuition = ({ tuitions }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,17 +17,27 @@ const Tuition = ({ tuitions }) => {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
-    <Container>
+    <Container data-aos="fade-up">
       {/* Tuition Cards */}
-      <div className="pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8">
+      <div
+        data-aos="fade-up"
+        className="pt-12  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-2 gap-2 md:gap-3"
+      >
         {currentTuitions && currentTuitions.length > 0 ? (
           currentTuitions.map((tuition) => (
             <Card key={tuition._id} item={tuition} />
           ))
         ) : (
           <p className="col-span-full text-center font-semibold py-10">
-            No approved tuitions found.
+            No approved tuitions found
           </p>
         )}
       </div>

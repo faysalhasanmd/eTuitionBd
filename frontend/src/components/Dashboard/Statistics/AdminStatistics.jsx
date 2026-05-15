@@ -13,6 +13,8 @@ import {
 import axios from "axios";
 import LoadingSpinner from "../../Shared/LoadingSpinner";
 import { FaChartLine } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // Chart.js setup
 ChartJS.register(
@@ -29,11 +31,19 @@ const AdminStatistics = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ AOS INIT
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: true,
+    });
+  }, []);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/admin/dashboard-stats",
+          "https://tuitionsbd.vercel.app/admin/dashboard-stats",
         );
         setStats(res.data);
       } catch (err) {
@@ -45,17 +55,13 @@ const AdminStatistics = () => {
     fetchStats();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <LoadingSpinner />;
 
-  // fallback admin count
   const admins =
     stats.admins !== undefined
       ? stats.admins
       : stats.users - (stats.students + stats.tutors);
 
-  // 🎯 Chart Colors
   const COLORS = {
     student: "#4e73df",
     tutor: "#1cc88a",
@@ -65,31 +71,26 @@ const AdminStatistics = () => {
     application: "#858796",
   };
 
-  // Users Pie
   const usersPieData = {
     labels: ["Students", "Tutors", "Admins"],
     datasets: [
       {
         data: [stats.students, stats.tutors, admins],
         backgroundColor: [COLORS.student, COLORS.tutor, COLORS.admin],
-        borderWidth: 2,
       },
     ],
   };
 
-  // Revenue
   const revenueBarData = {
     labels: ["Revenue"],
     datasets: [
       {
         data: [stats.totalRevenue],
         backgroundColor: COLORS.revenue,
-        borderRadius: 8,
       },
     ],
   };
 
-  // Tuitions
   const tuitionsBarData = {
     labels: ["Tuitions"],
     datasets: [
@@ -106,7 +107,6 @@ const AdminStatistics = () => {
     ],
   };
 
-  // Applications
   const applicationsPieData = {
     labels: ["Applications"],
     datasets: [
@@ -117,48 +117,22 @@ const AdminStatistics = () => {
     ],
   };
 
-  // Card component
   const Card = ({ title, value, color }) => (
     <div
-      style={{
-        flex: "1 1 180px",
-        padding: "20px",
-        borderRadius: "14px",
-        backgroundColor: color,
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-        textAlign: "center",
-        transition: "all 0.3s ease",
-        cursor: "pointer",
-        color: "#fff",
-      }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.transform = "translateY(-5px)")
-      }
-      onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+      data-aos="zoom-in"
+      className="card-box"
+      style={{ backgroundColor: color }}
     >
-      <h4 style={{ margin: 0 }}>{title}</h4>
-      <p
-        style={{
-          marginTop: "10px",
-          fontWeight: "bold",
-          fontSize: "1.4rem",
-        }}
-      >
-        {value}
-      </p>
+      <h4>{title}</h4>
+      <p>{value}</p>
     </div>
   );
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        backgroundColor: "#f1f3f6",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="p-8 bg-gray-100 min-h-screen">
       {/* 🔥 Header */}
       <div
+        data-aos="fade-down"
         style={{
           marginTop: "48px",
           marginBottom: "28px",
@@ -166,58 +140,32 @@ const AdminStatistics = () => {
           borderRadius: "14px",
           background: "linear-gradient(135deg, #4e73df, #224abe)",
           color: "#fff",
-          boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
         }}
       >
-        <h2
-          style={{
-            fontSize: "28px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
+        <h2 className="flex items-center gap-2 text-2xl">
           <FaChartLine /> Admin Dashboard
         </h2>
-
-        <p style={{ marginTop: "8px", fontSize: "14px", opacity: 0.9 }}>
-          Overview of platform performance, users, revenue & analytics
-        </p>
-
-        <p style={{ marginTop: "5px", fontSize: "12px", opacity: 0.8 }}>
-          Last updated: {new Date().toLocaleString()}
+        <p className="text-sm opacity-80 mt-2">
+          Overview of platform performance
         </p>
       </div>
 
       {/* 🎯 Cards */}
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          flexWrap: "wrap",
-          marginBottom: "50px",
-        }}
-      >
+      <div className="flex gap-5 flex-wrap mb-10">
         <Card title="Total Users" value={stats.users} color="#6c757d" />
-
         <Card title="Students" value={stats.students} color={COLORS.student} />
-
         <Card title="Tutors" value={stats.tutors} color={COLORS.tutor} />
-
         <Card title="Admins" value={admins} color={COLORS.admin} />
-
         <Card
           title="Revenue"
           value={`${stats.totalRevenue} BDT`}
           color={COLORS.revenue}
         />
-
         <Card
           title="Tuitions"
-          value={`${stats.totalTuitions}`}
+          value={stats.totalTuitions}
           color={COLORS.pending}
         />
-
         <Card
           title="Applications"
           value={stats.totalApplications}
@@ -226,38 +174,32 @@ const AdminStatistics = () => {
       </div>
 
       {/* 📊 Charts */}
-      <div
-        style={{
-          display: "flex",
-          gap: "30px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div className="chart-box">
+      <div className="flex gap-6 flex-wrap">
+        <div data-aos="fade-up" className="chart-box">
           <h3>Users Breakdown</h3>
           <Pie data={usersPieData} />
         </div>
 
-        <div className="chart-box">
-          <h3>Total Revenue</h3>
+        <div data-aos="fade-up" className="chart-box">
+          <h3>Revenue</h3>
           <Bar
             data={revenueBarData}
             options={{ plugins: { legend: { display: false } } }}
           />
         </div>
 
-        <div className="chart-box">
+        <div data-aos="fade-up" className="chart-box">
           <h3>Tuitions</h3>
           <Bar data={tuitionsBarData} />
         </div>
 
-        <div className="chart-box">
+        <div data-aos="fade-up" className="chart-box">
           <h3>Applications</h3>
           <Pie data={applicationsPieData} />
         </div>
       </div>
 
-      {/* CSS */}
+      {/* Styles */}
       <style>
         {`
           .chart-box {
@@ -272,6 +214,21 @@ const AdminStatistics = () => {
           .chart-box h3 {
             margin-bottom: 15px;
             color: #4e73df;
+          }
+
+          .card-box {
+            flex: 1;
+            min-width: 160px;
+            padding: 18px;
+            border-radius: 14px;
+            color: white;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+          }
+
+          .card-box:hover {
+            transform: translateY(-5px);
           }
         `}
       </style>

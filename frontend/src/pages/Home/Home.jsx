@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
 import Tuition from "../../components/Home/Tuition";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import HeroSection from "./HeroSection";
 import LatestTuitionSection from "./LatestTuitionSection";
 import LatestTutorsSection from "./LatestTutorsSection";
 import About from "../../components/Shared/About";
-import Contact from "../../components/Shared/Contact";
+import Marquee from "react-fast-marquee";
+import MarqueeTuition from "./MarqueeTuition";
+import AllTutor from "./AllTutor";
 
 const Home = () => {
   const [approvedTuitions, setApprovedTuitions] = useState([]);
@@ -17,7 +18,6 @@ const Home = () => {
 
   const location = useLocation();
 
-  // ✅ AOS init
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -25,7 +25,6 @@ const Home = () => {
     });
   }, []);
 
-  // ✅ route change হলে refresh
   useEffect(() => {
     AOS.refresh();
   }, [location]);
@@ -34,7 +33,7 @@ const Home = () => {
     const fetchTuitions = async () => {
       try {
         const res = await fetch(
-          "https://etuitionbd-fawn.vercel.app/tuition?status=Approved",
+          "https://tuitionsbd.vercel.app/tuition?status=Approved",
         );
         const data = await res.json();
         setApprovedTuitions(data);
@@ -61,22 +60,44 @@ const Home = () => {
       <div data-aos="fade-up">
         <HeroSection />
       </div>
+      <div className="mt-8 px-4">
+        <div className=" rounded-2xl py-4 bg-blue-200 shadow-xl overflow-hidden">
+          <Marquee
+            speed={50}
+            pauseOnHover
+            gradient={false}
+            className="flex justify-between"
+          >
+            <div className="bg-blue-200 py-4 flex items-center gap-10 ">
+              <span className="bg-blue-400 text-white font-bold px-4 py-1 rounded-full text-sm  backdrop-blur-md">
+                📢 Notice
+              </span>
+
+              <p className="font-bold text-black text-3xl md:text-lg leading-relaxed max-w-5xl">
+                Tuition is a type of private education. Students attend classes
+                with a tutor, where they receive one-on-one guidance...
+              </p>
+            </div>
+          </Marquee>
+        </div>
+      </div>
 
       {/* 🔥 Latest Tuition Section */}
+      <section data-aos="fade-up" className="mt-5">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Latest Tuition Opportunities
+          </h2>
+          <p className="mt-3 text-lg">
+            Check out the most recent tuition posts from students.
+          </p>
+        </div>
+      </section>
       <section
         data-aos="fade-up"
-        className="py-20 bg-white border-t border-b border-gray-200 shadow-sm"
+        className="py-10 w-[full] bg-white border-t border-b border-gray-200 shadow-sm"
       >
         <div className="mx-auto px-6">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Latest Tuition Opportunities
-            </h2>
-            <p className="mt-3 text-lg">
-              Check out the most recent tuition posts from students.
-            </p>
-          </div>
-
           <div data-aos="fade-up">
             <LatestTuitionSection />
           </div>
@@ -84,77 +105,67 @@ const Home = () => {
       </section>
 
       {/* 🔥 Latest Tutors Section */}
+      <section data-aos="fade-up" className="mt-6">
+        <div className="bg-gradient-to-r w-full from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Top Tutors Available
+          </h2>
+          <p className="mt-3 text-lg">
+            Explore our verified tutors and find your perfect match.
+          </p>
+        </div>
+      </section>
       <section
         data-aos="fade-up"
-        className="py-20 bg-gray-50 border-t border-gray-200"
+        className="py-14 bg-gray-50 border-t border-gray-200"
       >
         <div className="mx-auto px-6">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Top Tutors Available
-            </h2>
-            <p className="mt-3 text-lg">
-              Explore our verified tutors and find your perfect match.
-            </p>
-          </div>
-
           <div data-aos="fade-up">
             <LatestTutorsSection />
           </div>
         </div>
       </section>
-
-      {/* 🔥 Divider */}
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="border-t border-gray-300 my-12"></div>
-      </div>
+      <section data-aos="fade-up">
+        <AllTutor></AllTutor>
+      </section>
 
       {/* 🔥 All Approved Tuition */}
+      <section data-aos="fade-up" className="mt-6">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            Verified Tuition Opportunities
+          </h2>
+          <p className="mt-4 max-w-2xl mx-auto text-lg">
+            Explore approved tuition postings and connect with students.
+          </p>
+        </div>
+      </section>
       <section
         data-aos="fade-up"
-        className="py-24 bg-white border border-gray-100 rounded-xl shadow-sm"
+        className="py-14 bg-white border border-gray-100 rounded-xl shadow-sm"
       >
         <div className="mx-auto px-6">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-              Verified Tuition Opportunities
-            </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg">
-              Explore approved tuition postings and connect with students.
-            </p>
-          </div>
-
           <div data-aos="fade-up">
             <Tuition tuitions={approvedTuitions} />
           </div>
         </div>
       </section>
-
-      {/* 🔥 About + Contact */}
-      <section className="mt-10 space-y-10">
-        <div data-aos="fade-up">
-          <About />
-        </div>
-        {/* <div data-aos="fade-up">
-          <Contact />
-        </div> */}
+      <section>
+        <MarqueeTuition tuitions={approvedTuitions}></MarqueeTuition>
       </section>
 
-      {/* 🔥 CTA */}
-      <section className="bg-green-600 py-20 mt-12 rounded-lg shadow-lg border border-green-700">
-        <div className="max-w-6xl mx-auto px-6 text-center text-white">
-          <div className="mb-8 border-b border-white pb-6">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">
-              Find the Right Tutor
+      <section className="mt-10 space-y-10">
+        <div data-aos="fade-up">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20 text-center rounded-b-3xl shadow-lg">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              🎓 Empowering Smarter Learning
             </h2>
-            <p className="text-lg">
-              Connect students and tutors easily with our platform.
+            <p className="mt-4 max-w-2xl mx-auto text-lg">
+              eTuitionBD connects students with trusted tutors — making
+              education accessible, efficient, and stress-free.
             </p>
           </div>
-
-          <button className="bg-white text-green-600 font-semibold px-8 py-3 rounded-xl shadow-md hover:bg-gray-100 transition">
-            Post a Tuition
-          </button>
+          <About />
         </div>
       </section>
     </div>

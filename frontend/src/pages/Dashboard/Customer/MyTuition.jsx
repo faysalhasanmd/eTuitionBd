@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomerOrderDataRow from "../../../components/Dashboard/TableRows/CustomerOrderDataRow";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import CustomerOrderDataRow from "../../../components/Dashboard/TableRows/CustomerOrderDataRow";
 
 const MyTuition = () => {
   const [tuitions, setTuitions] = useState([]);
@@ -10,7 +10,7 @@ const MyTuition = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.get(
-        "https://etuitionbd-fawn.vercel.app/tuition?status=Approved",
+        "https://tuitionsbd.vercel.app/tuition?status=Approved",
       );
       setTuitions(data);
       setLoading(false);
@@ -39,13 +39,13 @@ const MyTuition = () => {
             <table className="min-w-full leading-normal">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="px-5 py-3 border-b">Image</th>
-                  <th className="px-5 py-3 border-b">Name</th>
-                  <th className="px-5 py-3 border-b">Subject</th>
-                  <th className="px-5 py-3 border-b">Budget</th>
-                  <th className="px-5 py-3 border-b">Schedule</th>
-                  <th className="px-5 py-3 border-b">Status</th>
-                  <th className="px-5 py-3 border-b">Action</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Image</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Name</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Subject</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Budget</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Schedule</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Status</th>
+                  <th className="px-5 bg-lime-200 py-3 border-b">Action</th>
                 </tr>
               </thead>
 

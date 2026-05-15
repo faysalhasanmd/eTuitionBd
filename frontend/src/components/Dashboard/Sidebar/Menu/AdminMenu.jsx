@@ -1,5 +1,7 @@
 import { FaUserCog } from "react-icons/fa";
 import { MdOutlineManageHistory } from "react-icons/md";
+import { FcStatistics } from "react-icons/fc";
+import { TbReportAnalytics } from "react-icons/tb";
 
 import MenuItem from "./MenuItem";
 
@@ -7,7 +9,7 @@ const AdminMenu = () => {
   return (
     <>
       <MenuItem
-        icon={MdOutlineManageHistory}
+        icon={FcStatistics}
         label="Admin Statistics"
         address="admin-statistics"
       />
@@ -18,7 +20,7 @@ const AdminMenu = () => {
       />
       <MenuItem icon={FaUserCog} label="Manage Users" address="manage-users" />
       <MenuItem
-        icon={FaUserCog}
+        icon={TbReportAnalytics}
         label="Reports & Analytics"
         address="reports-analytics"
       />

@@ -14,7 +14,7 @@ const CustomerOrderDataRow = ({ item, refetch }) => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `https://etuitionbd-fawn.vercel.app/tuition/${item._id}`,
+        `https://tuitionsbd.vercel.app/tuition/${item._id}`,
       );
 
       if (data.deletedCount === 1) {

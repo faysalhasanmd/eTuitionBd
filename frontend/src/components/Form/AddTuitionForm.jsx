@@ -2,9 +2,12 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddTuitionForm = () => {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -14,6 +17,8 @@ const AddTuitionForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
+
     try {
       const tuitionData = {
         studentName: user?.displayName,
@@ -24,13 +29,13 @@ const AddTuitionForm = () => {
         budget: Number(data.budget),
         schedule: data.schedule,
         description: data.description,
-        image: data.image || "", //
+        image: data.image || "",
         status: "Pending",
         postedAt: new Date(),
       };
 
       const res = await axios.post(
-        `https://etuitionbd-fawn.vercel.app/tuition`,
+        `https://tuitionsbd.vercel.app/tuition`,
         tuitionData,
       );
 
@@ -39,7 +44,9 @@ const AddTuitionForm = () => {
         reset();
       }
     } catch (error) {
-      toast.error("Failed to post tuition", error);
+      toast.error("Failed to post tuition");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,7 +57,7 @@ const AddTuitionForm = () => {
           {/* Left Side */}
           <div className="space-y-6">
             <div>
-              <label>Your Name</label>
+              <label className="text-gray-500">Your Name</label>
               <input
                 type="text"
                 readOnly
@@ -60,7 +67,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Your Email</label>
+              <label className="text-gray-500">Your Email</label>
               <input
                 type="email"
                 readOnly
@@ -70,7 +77,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Subject</label>
+              <label className="text-gray-500">Subject</label>
               <select
                 {...register("subject", { required: "Required" })}
                 className="w-full px-4 py-3 border rounded-md"
@@ -81,11 +88,15 @@ const AddTuitionForm = () => {
                 <option value="Math">Math</option>
                 <option value="Physics">Physics</option>
                 <option value="Chemistry">Chemistry</option>
+                <option value="Web">Web</option>
+                <option value="DSA">DSA</option>
+                <option value="Python">Python</option>
+                <option value="Cyber Security">Cyber Security</option>
               </select>
             </div>
 
             <div>
-              <label>Class</label>
+              <label className="text-gray-500">Class</label>
               <input
                 {...register("class", { required: "Required" })}
                 className="w-full px-4 py-3 border rounded-md"
@@ -93,7 +104,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Location</label>
+              <label className="text-gray-500">Location</label>
               <input
                 {...register("location", { required: "Required" })}
                 className="w-full px-4 py-3 border rounded-md"
@@ -104,7 +115,7 @@ const AddTuitionForm = () => {
           {/* Right Side */}
           <div className="space-y-6">
             <div>
-              <label>Budget</label>
+              <label className="text-gray-500">Budget</label>
               <input
                 type="number"
                 {...register("budget", { required: "Required" })}
@@ -113,7 +124,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Schedule</label>
+              <label className="text-gray-500">Schedule</label>
               <input
                 {...register("schedule", { required: "Required" })}
                 className="w-full px-4 py-3 border rounded-md"
@@ -121,7 +132,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Description</label>
+              <label className="text-gray-500">Description</label>
               <textarea
                 {...register("description", { required: "Required" })}
                 className="w-full h-32 px-4 py-3 border rounded-md"
@@ -129,7 +140,7 @@ const AddTuitionForm = () => {
             </div>
 
             <div>
-              <label>Image URL</label>
+              <label className="text-gray-500">Image URL</label>
               <input
                 type="text"
                 {...register("image", { required: "Image URL is required" })}
@@ -137,15 +148,20 @@ const AddTuitionForm = () => {
                 className="w-full px-4 py-2 border rounded-md"
               />
             </div>
-
-            <button
-              type="submit"
-              className="w-full p-3 mt-3 text-center font-medium text-white bg-lime-500 rounded-md"
-            >
-              Post Tuition
-            </button>
           </div>
         </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full py-3 mt-3 bg-lime-500 text-white font-semibold rounded-md hover:bg-lime-600 transition-colors flex justify-center items-center"
+        >
+          {loading ? (
+            <TbFidgetSpinner className="animate-spin" size={24} />
+          ) : (
+            "Post Tuition"
+          )}
+        </button>
       </form>
     </div>
   );

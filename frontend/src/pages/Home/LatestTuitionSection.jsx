@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import { Link } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const LatestTuitionSection = () => {
   const [tuitions, setTuitions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://etuitionbd-fawn.vercel.app/tuition/latest")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch");
-        }
-        return res.json();
-      })
+    fetch("https://tuitionsbd.vercel.app/tuition/latest")
+      .then((res) => res.json())
       .then((data) => {
         setTuitions(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: true,
+    });
   }, []);
 
   if (loading) {
     return (
-      <div className="text-center py-20 text-gray-500 text-lg">
-        <LoadingSpinner></LoadingSpinner>
+      <div className="text-center py-20">
+        <LoadingSpinner />
       </div>
     );
   }
@@ -35,44 +36,78 @@ const LatestTuitionSection = () => {
   if (tuitions.length === 0) {
     return (
       <div className="text-center py-20 text-gray-500 text-lg">
-        No Latest Tuition Found
+        😕 No Latest Tuition Found
       </div>
     );
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section
+      data-aos="fade-up"
+      className="py-20 w-[full] bg-gradient-to-b from-gray-50 to-white"
+    >
       <div className="container mx-auto px-6">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800">
+            🚀 Latest Tuition Opportunities
+          </h2>
+          <p className="text-gray-500 mt-2">
+            Find the newest tutoring jobs near you 📍
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="grid w-[full] mx-auto gap-8 md:grid-cols-2 lg:grid-cols-3">
           {tuitions.map((tuition) => (
             <div
+              data-aos="fade-up"
               key={tuition._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
+              className="group bg-white border border-gray-100 rounded-2xl shadow-sm 
+              hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
             >
-              <img
-                src={tuition.image}
-                alt={tuition.subject}
-                className="h-48 w-full object-cover"
-              />
+              {/* Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={tuition.image}
+                  alt={tuition.subject}
+                  className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
 
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+
+                {/* Badge */}
+                <div className="absolute top-3 left-3 bg-white/80 backdrop-blur px-3 py-1 text-xs rounded-full font-medium">
+                  {tuition.subject}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 flex flex-col gap-2">
+                <h3 className="text-lg font-semibold text-gray-800">
                   {tuition.subject} Tuition
                 </h3>
 
-                <p className="text-gray-600 mb-1">Class: {tuition.class}</p>
-
-                <p className="text-gray-600 mb-1">
-                  Location: {tuition.location}
+                <p className="text-gray-500 text-sm">
+                  🎓 Class:{" "}
+                  <span className="text-gray-700">{tuition.class}</span>
                 </p>
 
-                <p className="text-lime-600 font-bold mb-4">
-                  Budget: ৳{tuition.budget}
+                <p className="text-gray-500 text-sm">
+                  📍 Location:{" "}
+                  <span className="text-gray-700">{tuition.location}</span>
                 </p>
 
+                <p className="text-lime-600 font-bold mt-1">
+                  💰 ৳{tuition.budget}
+                </p>
+
+                {/* Button */}
                 <Link
                   to={`/tuition/${tuition._id}`}
-                  className="mt-auto inline-block text-center w-full py-2 px-4 bg-lime-500 text-white font-medium rounded-lg hover:bg-lime-600 transition-colors"
+                  className="mt-4 inline-flex items-center justify-center w-full py-2.5 
+                  rounded-xl bg-lime-500 text-white 
+                  font-medium shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                 >
                   View Details
                 </Link>

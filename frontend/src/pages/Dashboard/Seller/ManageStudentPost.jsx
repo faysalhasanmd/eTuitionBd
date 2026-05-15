@@ -9,7 +9,7 @@ const ManageStudentPost = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `https://etuitionbd-fawn.vercel.app/tuition?status=Pending`,
+        `https://tuitionsbd.vercel.app/tuition?status=Pending`,
       );
       setPending(res.data);
     } catch (err) {
@@ -23,9 +23,9 @@ const ManageStudentPost = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 sm:px-8">
-      <h2 className="text-2xl font-bold mt-8 mb-4">Pending Tuitions</h2>
-      <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+    <div className="container mx-auto px-4 sm:px-8 ">
+      <h2 className="text-2xl font-bold mb-4 mt-16">Pending Tuitions</h2>
+      <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 overflow-x-auto">
         <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
           <table className="min-w-full leading-normal">
             <thead>

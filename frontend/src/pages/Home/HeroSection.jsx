@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import { Typewriter } from "react-simple-typewriter";
 
 const HeroSection = () => {
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState(0);
   const [fade, setFade] = useState(true);
 
-  // 🔥 Fetch Approved Tuition Images
   useEffect(() => {
-    fetch("https://etuitionbd-fawn.vercel.app/tuition?status=Approved")
+    fetch("https://tuitionsbd.vercel.app/tuition?status=Approved")
       .then((res) => res.json())
       .then((data) => {
         const imageList = data.map((item) => item.image).filter((img) => img);
@@ -17,10 +17,8 @@ const HeroSection = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  // 🔥 Slideshow Effect
   useEffect(() => {
     if (images.length === 0) return;
-
     const interval = setInterval(() => {
       setFade(false);
       setTimeout(() => {
@@ -28,69 +26,143 @@ const HeroSection = () => {
         setFade(true);
       }, 600);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [images]);
 
   if (images.length === 0) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen bg-slate-900">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="bg-yellow-400 min-h-screen flex items-center justify-center p-6">
-      {/* Main Rounded Hero Container */}
-      <div className="relative w-full max-w-7xl rounded-3xl overflow-hidden shadow-2xl">
-        {/* 🔥 Dynamic Background */}
-        <div
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 ${
-            fade ? "opacity-100 scale-100" : "opacity-0 scale-110"
-          }`}
-          style={{
-            backgroundImage: `url(${images[current]})`,
-          }}
-        ></div>
+    <section className="relative w-full min-h-[100svh] sm:min-h-screen overflow-hidden bg-slate-900">
+      {/* ── Background Slideshow ── */}
+      <div
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+          fade ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ backgroundImage: `url(${images[current]})` }}
+      />
 
-        {/* 🔥 Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+      {/* ── Multi-layer Overlay ── */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-slate-900/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
 
-        {/* 🔥 Floating Elements (Design Style) */}
-        <div className="absolute top-10 left-10 w-32 h-32 border-8 border-red-500 rounded-full opacity-70"></div>
-        <div className="absolute bottom-10 right-10 w-24 h-24 border-8 border-blue-500 rounded-full opacity-70"></div>
-        <div className="absolute top-1/2 right-20 text-7xl font-bold text-green-400 opacity-70">
-          A+
-        </div>
+      {/* ── Decorative accent line ── */}
+      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 via-cyan-400 to-transparent hidden sm:block" />
 
-        {/* 🔥 Content */}
-        <div className="relative z-10 px-10 py-20 md:px-20 md:py-28 text-white max-w-3xl">
-          <p className="text-lg mb-3 tracking-wide">Back to Learning</p>
+      {/* ── Slide indicators ── */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20 sm:left-auto sm:translate-x-0 sm:right-8 sm:bottom-8 sm:flex-col">
+        {images.slice(0, Math.min(images.length, 6)).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              setFade(false);
+              setTimeout(() => {
+                setCurrent(i);
+                setFade(true);
+              }, 300);
+            }}
+            className={`rounded-full transition-all duration-300 ${
+              i === current
+                ? "bg-blue-400 w-6 h-2 sm:w-2 sm:h-6"
+                : "bg-white/30 hover:bg-white/60 w-2 h-2"
+            }`}
+          />
+        ))}
+      </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
-            Find The Best <br />
-            Home Tutors Near You
+      {/* ── Main Content ── */}
+      <div className="relative z-10 min-h-[100svh] sm:min-h-screen flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 py-24 sm:py-28 lg:py-32">
+          {/* Tag */}
+          <div className="flex items-center gap-2 mb-4 sm:mb-5">
+            <span className="h-px w-8 bg-blue-400" />
+            <span className="text-blue-400 text-xs sm:text-sm font-semibold uppercase tracking-[0.2em]">
+              Bangladesh's #1 Tuition Platform
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] mb-4 sm:mb-5 max-w-3xl">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+              <Typewriter
+                words={[
+                  "Find The Best Home Tutors",
+                  "Learn From Expert Tutors",
+                  "Build Your Future Today",
+                ]}
+                loop={true}
+                cursor
+                cursorStyle="|"
+                typeSpeed={70}
+                deleteSpeed={45}
+                delaySpeed={1800}
+              />
+            </span>
+            <br />
+            <span className="text-white">Near You</span>
           </h1>
 
-          <p className="text-gray-200 mb-8">
+          {/* Subtitle */}
+          <p className="text-slate-300 text-sm sm:text-base lg:text-lg max-w-lg mb-8 sm:mb-10 leading-relaxed">
             Post your tuition needs or discover the perfect tutor effortlessly.
+            Trusted by thousands of students across Bangladesh.
           </p>
 
-          {/* 🔎 Search Bar */}
-          <div className="flex items-center bg-white rounded-full overflow-hidden shadow-lg max-w-md">
-            <input
-              type="text"
-              placeholder="Search subject, class, location..."
-              className="flex-1 px-5 py-3 text-black outline-none"
-            />
-            <button className="bg-red-500 px-6 py-3 text-white font-semibold hover:bg-red-600 transition">
-              Search
-            </button>
+          {/* Search Bar */}
+          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+            <div className="flex items-stretch bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden shadow-2xl focus-within:border-blue-400 focus-within:bg-white/15 transition-all duration-300">
+              {/* Search icon */}
+              <div className="flex items-center pl-4 pr-2 text-slate-400">
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Subject, class, location…"
+                className="flex-1 px-2 py-3.5 sm:py-4 bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none min-w-0"
+              />
+              <button className="shrink-0 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 px-4 sm:px-6 py-3.5 sm:py-4 text-white text-sm sm:text-base font-semibold transition-colors duration-200 rounded-r-2xl">
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div className="flex flex-wrap gap-4 sm:gap-8 mt-8 sm:mt-10">
+            {[
+              { value: "500+", label: "Tutors" },
+              { value: "1200+", label: "Students" },
+              { value: "50+", label: "Subjects" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex items-center gap-2">
+                <span className="text-xl sm:text-2xl font-extrabold text-white">
+                  {stat.value}
+                </span>
+                <span className="text-slate-400 text-xs sm:text-sm">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

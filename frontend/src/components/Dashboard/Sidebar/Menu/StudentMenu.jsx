@@ -1,21 +1,23 @@
 import { BsFillHouseAddFill, BsFingerprint } from "react-icons/bs";
-import { GrUserAdmin } from "react-icons/gr";
+import { FcStatistics } from "react-icons/fc";
+import { CgProfile } from "react-icons/cg";
+import { FaBookReader } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import MenuItem from "./MenuItem";
-import { useState } from "react";
+// import { useState } from "react";
 import BecomeSellerModal from "../../../Modal/BecomeSellerModal";
 
-const CustomerMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const StudentMenu = () => {
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsOpen(false);
+  // };
 
   return (
     <>
       <MenuItem
-        icon={BsFillHouseAddFill}
+        icon={FcStatistics}
         label="StudentStatistics"
         address="student-statistics"
       />
@@ -24,7 +26,7 @@ const CustomerMenu = () => {
         label="Add Tuition"
         address="add-tuition"
       />
-      <MenuItem icon={BsFingerprint} label="My Tuition" address="my-tuition" />
+      <MenuItem icon={FaBookReader} label="My Tuition" address="my-tuition" />
       <MenuItem
         icon={BsFingerprint}
         label="Tutor Applied Tuition"
@@ -35,19 +37,24 @@ const CustomerMenu = () => {
         label="Payment History"
         address="student-payment-history"
       />
+      <MenuItem
+        icon={CgProfile}
+        label="Profile Setting"
+        address="profile-setting"
+      />
 
       <div
-        onClick={() => setIsOpen(true)}
+        // onClick={() => setIsOpen(true)}
         className="flex items-center px-4 py-2 mt-5 transition-colors duration-300 transform text-gray-600 hover:bg-gray-300 hover:text-gray-700 cursor-pointer"
       >
-        <GrUserAdmin className="w-5 h-5" />
-        <span className="mx-4 font-medium">Become A Seller</span>
+        {/* <GrUserAdmin className="w-5 h-5" /> */}
+        {/* <span className="mx-4 font-medium">Become A Seller</span> */}
       </div>
 
       {/* Fix here: PascalCase */}
-      <BecomeSellerModal closeModal={closeModal} isOpen={isOpen} />
+      {/* <BecomeSellerModal closeModal={closeModal} isOpen={isOpen} /> */}
     </>
   );
 };
 
-export default CustomerMenu;
+export default StudentMenu;

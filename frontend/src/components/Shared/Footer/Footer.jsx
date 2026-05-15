@@ -64,19 +64,48 @@ const Footer = () => {
           <h2 className="text-lg font-semibold text-white mb-4">Follow Us</h2>
 
           <div className="flex gap-4 text-lg">
-            <a href="#" className="hover:text-white transition">
+            <a
+              href="https://www.facebook.com/md.faysal.751946"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-500 transition"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="hover:text-white transition">
+
+            <a
+              href="https://en.wikipedia.org/wiki/Instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-pink-500 transition"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-white transition">
+
+            <a
+              href="https://www.linkedin.com/in/md-faysal-hasan-0a2703365/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-600 transition"
+            >
               <FaLinkedinIn />
             </a>
-            <a href="#" className="hover:text-white transition">
+
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-red-500 transition"
+            >
               <FaYoutube />
             </a>
-            <a href="#" className="hover:text-white transition">
+
+            <a
+              href="https://en.wikipedia.org/wiki/Twitter,_Inc."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-sky-400 transition"
+            >
               <FaXTwitter />
             </a>
           </div>
