@@ -2,9 +2,9 @@
 
 ## Live Links
 
-- **Live Site:** https://your-live-site-link.com
-- **Client Repo:** https://github.com/your-client-repo
-- **Server Repo:** https://github.com/your-server-repo
+- **Live Site:** https://cerulean-maamoul-f79e46.netlify.app/
+- **Client Repo:** https://github.com/faysalhasanmd/eTuitionBd/tree/main/frontend
+- **Server Repo:** https://github.com/faysalhasanmd/eTuitionBd/tree/main/backend
 
 ---
 
@@ -165,6 +165,6 @@
 ### 1️ Clone the repositories
 
 ```bash
-git clone https://github.com/your-client-repo
-git clone https://github.com/your-server-repo
+git clone https://github.com/faysalhasanmd/eTuitionBd/tree/main/frontend
+git clone https://github.com/faysalhasanmd/eTuitionBd/tree/main/backend
 ```
